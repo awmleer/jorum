@@ -13,7 +13,7 @@ class State<T> {
 export class Subscribe<T> extends Component<Props<T>, State<T>> {
   state = new State<T>()
 
-  subscription: Subscription
+  subscription: Subscription = null
 
   constructor(props: Props<T>) {
     super(props)
@@ -48,6 +48,7 @@ export class Subscribe<T> extends Component<Props<T>, State<T>> {
   unsubscribe() {
     if (this.subscription) {
       this.subscription.unsubscribe()
+      this.subscription = null
     }
   }
 
