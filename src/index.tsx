@@ -17,18 +17,35 @@ export class Subscribe<T> extends Component<Props<T>, State<T>> {
 
   constructor(props: Props<T>) {
     super(props)
-    if (this.props.to) {
-      this.subscription = this.props.to.subscribe({
-        next: (v) => {
-          this.setState({
-            data: v
-          })
-        }
-      })
-    }
+  }
+
+  componentDidMount() {
+    this.subscribeToObservable(this.props.to)
+  }
+
+  componentWillReceiveProps(nextProps: Props<T>) {
+    this.unsubscribe()
+    this.subscribeToObservable(nextProps.to)
   }
 
   componentWillUnmount() {
+    this.unsubscribe()
+  }
+
+  subscribeToObservable(observable: Observable<T>) {
+    if (!observable) {
+      return
+    }
+    this.subscription = observable.subscribe({
+      next: (v) => {
+        this.setState({
+          data: v
+        })
+      }
+    })
+  }
+
+  unsubscribe() {
     if (this.subscription) {
       this.subscription.unsubscribe()
     }
