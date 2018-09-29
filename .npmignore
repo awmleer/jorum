@@ -1,1 +1,3 @@
 yarn.lock
+.yarnrc
+/src/example

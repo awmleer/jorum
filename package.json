@@ -6,14 +6,28 @@
   "author": "awmleer <awmleer@sparker.xyz>",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.config.js"
+  },
   "peerDependencies": {
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
     "rxjs": "^6.3.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "@types/react": "^16.4.14",
+    "@types/react-dom": "^16.0.8",
+    "awesome-typescript-loader": "^5.2.1",
+    "html-webpack-plugin": "^3.2.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "source-map-loader": "^0.2.4",
+    "typescript": "^3.1.1",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.9"
   }
 }
