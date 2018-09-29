@@ -1,5 +1,5 @@
 import React, {Component, ReactNode} from 'react'
-import {Observable} from 'rxjs'
+import {Observable, Subscription} from 'rxjs'
 
 interface Props<T> {
   to: Observable<T>
@@ -10,18 +10,27 @@ class State<T> {
   data: T = null
 }
 
-export class Subscription<T> extends Component<Props<T>, State<T>> {
+export class Subscribe<T> extends Component<Props<T>, State<T>> {
   state = new State<T>()
+
+  subscription: Subscription
+
   constructor(props: Props<T>) {
     super(props)
     if (this.props.to) {
-      this.props.to.subscribe({
+      this.subscription = this.props.to.subscribe({
         next: (v) => {
           this.setState({
             data: v
           })
         }
       })
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.unsubscribe()
     }
   }
 
