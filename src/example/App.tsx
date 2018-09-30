@@ -15,9 +15,10 @@ export class App extends React.Component<{}, {}> {
           )}
         </Subscribe>
         <Subscribe to={counterBloc.shouldShowResetButton$}>
-          {data => (
-            data && <button onClick={counterBloc.resetCounter}>reset</button>
-          )}
+          {data => {
+            console.log(data)
+            return data && <button onClick={counterBloc.resetCounter}>reset</button>
+          }}
         </Subscribe>
       </div>
     )

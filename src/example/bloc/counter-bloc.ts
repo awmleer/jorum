@@ -1,5 +1,5 @@
 import {BehaviorSubject} from 'rxjs'
-import {map} from 'rxjs/operators'
+import {distinctUntilChanged, map} from 'rxjs/operators'
 
 export class CounterBloc {
   constructor() {
@@ -10,7 +10,9 @@ export class CounterBloc {
 
   count$ = new BehaviorSubject(0)
 
-  shouldShowResetButton$ = this.count$.pipe(map(val => val > 10))
+  shouldShowResetButton$ = this.count$
+    .pipe(map(val => val > 10))
+    .pipe(distinctUntilChanged())
 
   resetCounter = () => {
     this.count$.next(0)
