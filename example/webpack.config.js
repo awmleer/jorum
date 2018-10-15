@@ -6,12 +6,12 @@ module.exports = {
   mode: 'development',
 
   entry: {
-    index: './src/example/index.tsx'
+    index: './src/index.tsx'
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/example/index.html',
+      template: './src/index.html',
       title: 'Output Management',
     }),
     new webpack.HotModuleReplacementPlugin(),

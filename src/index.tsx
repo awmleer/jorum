@@ -1,5 +1,7 @@
-import React, {Component, ReactNode} from 'react'
+import * as React from 'react'
+import {Component, ReactNode} from 'react'
 import {Observable, Subscription} from 'rxjs'
+import * as r from 'rxjs'
 
 interface Props<T> {
   to: Observable<T>

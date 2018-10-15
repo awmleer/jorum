@@ -3,12 +3,12 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "noImplicitAny": true,
-    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+//    "allowSyntheticDefaultImports": true,
+//    "moduleResolution": "node",
     "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es5",
-    "jsx": "react",
-    "lib": ["es6", "dom"]
+//    "esModuleInterop": true,
+    "jsx": "preserve"
   },
   "include": [
     "./lib/**/*"

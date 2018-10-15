@@ -1,6 +1,6 @@
 import React from "react"
 import {CounterBloc} from './bloc/counter-bloc'
-import {Subscribe} from '../src/index'
+import {Subscribe} from '../../lib'
 
 const counterBloc = new CounterBloc()
 
