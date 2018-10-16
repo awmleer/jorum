@@ -4,10 +4,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "target": "es6",
-//    "allowSyntheticDefaultImports": true,
-//    "moduleResolution": "node",
     "module": "commonjs",
-//    "esModuleInterop": true,
     "jsx": "preserve"
   },
   "include": [

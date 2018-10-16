@@ -1,64 +1,77 @@
 import * as React from 'react'
 import {Component, ReactNode} from 'react'
 import {Observable, Subscription} from 'rxjs'
-import * as r from 'rxjs'
 
-interface Props<T> {
-  to: Observable<T>
-  children: (data: T) => ReactNode
+interface Props {
+  to: Observable<any> | Observable<any>[]
+  children: (...listOfData: any[]) => ReactNode
 }
 
-class State<T> {
-  data: T = null
+class State {
+  data: any[] = []
 }
 
-export class Subscribe<T> extends Component<Props<T>, State<T>> {
-  state = new State<T>()
+export class Subscribe extends Component<Props, State> {
+  state = new State()
 
-  subscription: Subscription = null
+  subscriptions: Subscription[] = []
 
-  constructor(props: Props<T>) {
+  constructor(props: Props) {
     super(props)
   }
 
   componentDidMount() {
-    this.subscribeToObservable(this.props.to)
+    this.subscribeTo(this.props.to)
   }
 
-  componentWillReceiveProps(nextProps: Props<T>) {
+  componentWillReceiveProps(nextProps: Props) {
     this.unsubscribe()
-    this.subscribeToObservable(nextProps.to)
+    this.setState({
+      data: []
+    })
+    this.subscribeTo(nextProps.to)
   }
 
   componentWillUnmount() {
     this.unsubscribe()
   }
 
-  subscribeToObservable(observable: Observable<T>) {
-    if (!observable) {
-      return
-    }
-    this.subscription = observable.subscribe({
+  handleObservable(observable: Observable<any>, index:number) {
+    const subscription = observable.subscribe({
       next: (v) => {
-        this.setState({
-          data: v
-        })
+        this.setState((prevState: State) => {
+          const data = [...prevState.data];
+          data[index] = v
+          return {
+            data
+          }
+        });
       }
     })
+    this.subscriptions.push(subscription)
+  }
+
+  subscribeTo(to: Observable<any> | Observable<any>[]) {
+    if (!to) return
+    if (Array.isArray(to)) {
+      to.forEach(this.handleObservable.bind(this))
+    } else {
+      this.handleObservable(to, 0);
+    }
   }
 
   unsubscribe() {
-    if (this.subscription) {
-      this.subscription.unsubscribe()
-      this.subscription = null
+    for (let subscription of this.subscriptions) {
+      subscription.unsubscribe()
     }
+    this.subscriptions = []
   }
 
   render() {
-    if (this.state.data === null) {
+    if (!this.state.data.length) {
       return null;
     } else {
-      return this.props.children(this.state.data)
+      return this.props.children(...this.state.data)
     }
   }
 

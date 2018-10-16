@@ -9,9 +9,12 @@ export class App extends React.Component<{}, {}> {
     return (
       <div>
         counter
-        <Subscribe to={counterBloc.count$}>
-          {data => (
-            <p>{data}</p>
+        <Subscribe to={[counterBloc.count$, counterBloc.countAnother$]}>
+          {(count, countAnother) => (
+            <div>
+              <p>{count}</p>
+              <p>{countAnother}</p>
+            </div>
           )}
         </Subscribe>
         <Subscribe to={counterBloc.shouldShowResetButton$}>

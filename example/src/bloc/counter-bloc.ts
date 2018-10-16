@@ -5,10 +5,13 @@ export class CounterBloc {
   constructor() {
     setInterval(() => {
       this.count$.next(this.count$.value + 1)
+      this.countAnother$.next(this.countAnother$.value + 2)
     }, 1000)
   }
 
   count$ = new BehaviorSubject(0)
+
+  countAnother$ = new BehaviorSubject(10)
 
   shouldShowResetButton$ = this.count$
     .pipe(map(val => val > 10))
