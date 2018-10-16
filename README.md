@@ -21,6 +21,8 @@ npm install rxjs jorum --save
 
 ### Define a BLoC
 
+BLoC stands for "Business Logic Component".
+
 ```typescript
 export class CounterBloc {
   constructor() {
@@ -54,7 +56,7 @@ const counterBloc = new CounterBloc()
 
 Subscribe to a single observable:
 
-```react
+```tsx
 <Subscribe to={counterBloc.shouldShowResetButton$}>
   {shouldShowResetButton => (
     shouldShowResetButton && <button onClick={counterBloc.resetCounter}>reset</button>
@@ -64,7 +66,7 @@ Subscribe to a single observable:
 
 Subscribe to multiple observables:
 
-```react
+```tsx
 <Subscribe to={[counterBloc.count$, counterBloc.countAnother$]}>
   {(count, countAnother) => (
     <div>
@@ -77,14 +79,14 @@ Subscribe to multiple observables:
 
 ## Development
 
-### build
+### Build
 
 ```bash
 yarn install
 yarn build
 ```
 
-### run example app
+### Run example app
 
 ```bash
 yarn install
