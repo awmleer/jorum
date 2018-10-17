@@ -1,8 +1,10 @@
 import {BehaviorSubject} from 'rxjs'
 import {distinctUntilChanged, map} from 'rxjs/operators'
+import {Bloc} from '../../../lib'
 
-export class CounterBloc {
+export class CounterBloc extends Bloc {
   constructor() {
+    super()
     setInterval(() => {
       this.count$.next(this.count$.value + 1)
       this.countAnother$.next(this.countAnother$.value + 2)
