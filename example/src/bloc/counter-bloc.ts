@@ -23,3 +23,7 @@ export class CounterBloc extends Bloc {
     this.count$.next(0)
   }
 }
+
+export class TestBloc extends Bloc {
+  a$ = new BehaviorSubject('test-a')
+}

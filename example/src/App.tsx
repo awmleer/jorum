@@ -1,5 +1,5 @@
 import React from "react"
-import {CounterBloc} from './bloc/counter-bloc'
+import {CounterBloc, TestBloc} from './bloc/counter-bloc'
 import {Subscribe} from '../../lib'
 
 // const counterBloc = new CounterBloc()
@@ -52,6 +52,17 @@ export class App extends React.Component<{}, {}> {
               )}
             </CounterBloc.Consumer>
           </CounterBloc.Provider>
+          <TestBloc.Provider>
+            <TestBloc.Consumer>
+              {(testBloc:TestBloc) => (
+                <Subscribe to={testBloc.a$}>
+                  {a => (
+                    <p>{a}</p>
+                  )}
+                </Subscribe>
+              )}
+            </TestBloc.Consumer>
+          </TestBloc.Provider>
         </CounterBloc.Provider>
       </div>
     )
