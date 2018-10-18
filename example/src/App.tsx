@@ -1,7 +1,7 @@
 import React from "react"
 import {CounterBloc, TestBloc} from './bloc/counter.bloc'
 import {Subscribe} from '../../lib'
-import {Consumer, Provider} from '../../lib/context'
+import {Consumer, Provider} from '../../lib'
 import {Counter} from './Counter'
 
 interface State {

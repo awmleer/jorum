@@ -7,11 +7,10 @@ interface Props<T extends Bloc> {
   children: (bloc: T)=>ReactNode
 }
 
-export class Consumer<T extends Bloc> extends React.Component<Props<T>, any> {
+export class Consumer<T extends Bloc> extends React.Component<Props<T>, {}> {
   render() {
     const { of } = this.props
-    const ctor: typeof Bloc = of as any
-    const Context = ctor.getContext()
+    const Context = (of as any as typeof Bloc).getContext()
     return (
       <Context.Consumer>
         {(value: T) => (
@@ -21,4 +20,3 @@ export class Consumer<T extends Bloc> extends React.Component<Props<T>, any> {
     )
   }
 }
-

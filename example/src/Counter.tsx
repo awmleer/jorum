@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Consumer} from '../../lib/context'
+import {Consumer} from '../../lib'
 import {CounterBloc} from './bloc/counter.bloc'
 import {Subscribe} from '../../lib'
 

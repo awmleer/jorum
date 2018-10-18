@@ -6,26 +6,22 @@ interface Props<T extends Bloc> {
   children: React.ReactNode
 }
 
-
-
-export class Provider<T extends Bloc> extends React.Component<Props<T>, any> {
-  bloc: T
+export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
+  private bloc: T = null
   constructor(props: Props<T>) {
     super(props)
-    // this.checkContext(this.props.of)
     this.bloc = new this.props.of()
   }
 
-  // checkContext(C: typeof Bloc) {
-  //   if (C.context === null) {
-  //     C.context = React.createContext(null)
-  //   }
-  // }
+  componentWillReceiveProps(nextProps: Props<T>) {
+    if (this.props.of !== nextProps.of) {
+      this.bloc = new nextProps.of()
+    }
+  }
 
   render() {
     const { of } = this.props
-    const ctor: typeof Bloc = of as any
-    const Context = ctor.getContext()
+    const Context = (of as any as typeof Bloc).getContext()
     return (
       <Context.Provider value={this.bloc}>
         {this.props.children}
@@ -33,9 +29,3 @@ export class Provider<T extends Bloc> extends React.Component<Props<T>, any> {
     )
   }
 }
-
-
-
-// export function Provider<T extends Bloc>(bloc: T): React.Context<T> {
-//
-// }
