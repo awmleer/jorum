@@ -9,6 +9,7 @@ export class CounterBloc extends Bloc {
       this.count$.next(this.count$.value + 1)
       this.countAnother$.next(this.countAnother$.value + 2)
     }, 1000)
+    console.log('constructed!')
   }
 
   count$ = new BehaviorSubject(0)
