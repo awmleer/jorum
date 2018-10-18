@@ -25,7 +25,7 @@ export class App extends React.Component<{}, State> {
         {this.state.switcher}
         <button onClick={this.changeText}>switch bloc</button>
         {this.state.switcher ? (
-          <Provider of={CounterBloc}>
+          <Provider of={CounterBloc} args={[13]}>
             <Counter/>
           </Provider>
         ) : (

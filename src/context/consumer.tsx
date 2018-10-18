@@ -1,9 +1,9 @@
 import * as React from 'react'
-import {Bloc} from '../bloc'
+import {AbstractBloc, Bloc} from '../bloc'
 import {ReactNode} from 'react'
 
 interface Props<T extends Bloc> {
-  of: { new (): T }
+  of: AbstractBloc<T>
   children: (bloc: T)=>ReactNode
 }
 

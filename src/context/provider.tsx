@@ -1,8 +1,9 @@
 import * as React from 'react'
-import {Bloc} from '../bloc'
+import {AbstractBloc, Bloc} from '../bloc'
 
 interface Props<T extends Bloc> {
-  of: { new():T }
+  of: AbstractBloc<T>
+  args?: any[]
   children: React.ReactNode
 }
 
@@ -10,12 +11,20 @@ export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
   private bloc: T = null
   constructor(props: Props<T>) {
     super(props)
-    this.bloc = new this.props.of()
+    this.createBloc(this.props.of, this.props.args)
+  }
+
+  createBloc(B: AbstractBloc<T>, args?: any[]) {
+    if (args) {
+      this.bloc = new B(...args)
+    } else {
+      this.bloc = new B()
+    }
   }
 
   componentWillReceiveProps(nextProps: Props<T>) {
     if (this.props.of !== nextProps.of) {
-      this.bloc = new nextProps.of()
+      this.createBloc(nextProps.of, nextProps.args)
     }
   }
 

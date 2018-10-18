@@ -3,13 +3,16 @@ import {distinctUntilChanged, map} from 'rxjs/operators'
 import {Bloc} from '../../../lib'
 
 export class CounterBloc extends Bloc {
-  constructor() {
+  constructor(initialValue?: number) {
     super()
     setInterval(() => {
       this.count$.next(this.count$.value + 1)
       this.countAnother$.next(this.countAnother$.value + 2)
       console.log('tick!')
     }, 1000)
+    if (initialValue) {
+      this.count$ = new BehaviorSubject(initialValue)
+    }
     console.log('constructed!')
   }
 
