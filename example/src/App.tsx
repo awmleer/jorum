@@ -4,6 +4,8 @@ import {Subscribe} from '../../lib'
 import {Consumer, Provider} from '../../lib'
 import {Counter} from './Counter'
 
+const counterBloc = new CounterBloc(100)
+
 interface State {
   switcher: boolean
 }
@@ -25,7 +27,7 @@ export class App extends React.Component<{}, State> {
         {this.state.switcher}
         <button onClick={this.changeText}>switch bloc</button>
         {this.state.switcher ? (
-          <Provider of={CounterBloc} args={[13]}>
+          <Provider of={CounterBloc} use={counterBloc}>
             <Counter/>
           </Provider>
         ) : (
