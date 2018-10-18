@@ -8,6 +8,7 @@ export class CounterBloc extends Bloc {
     setInterval(() => {
       this.count$.next(this.count$.value + 1)
       this.countAnother$.next(this.countAnother$.value + 2)
+      console.log('tick!')
     }, 1000)
     console.log('constructed!')
   }

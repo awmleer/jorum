@@ -24,7 +24,7 @@ npm install rxjs jorum --save
 BLoC stands for "Business Logic Component".
 
 ```typescript
-export class CounterBloc {
+export class CounterBloc extends Bloc {
   constructor() {
     setInterval(() => {
       this.count$.next(this.count$.value + 1)
@@ -46,10 +46,22 @@ export class CounterBloc {
 }
 ```
 
-### Instantiate a BLoC
+### Provider
 
-```typescript
-const counterBloc = new CounterBloc()
+```tsx
+<Provider of={CounterBloc}>
+  {/*...*/}
+</Provider>
+```
+
+### Consumer
+
+```tsx
+<Consumer of={CounterBloc}>
+  {(counterBloc) => (
+    /*...*/
+  )}
+</Consumer>
 ```
 
 ### Subscribe
@@ -76,6 +88,10 @@ Subscribe to multiple observables:
   )}
 </Subscribe>
 ```
+
+## Example
+
+Full example is available [here](https://github.com/awmleer/jorum/tree/master/example).
 
 ## Development
 
