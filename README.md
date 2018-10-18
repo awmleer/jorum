@@ -1,4 +1,4 @@
-#  jorum
+#  Jorum
 
 ![GitHub](https://img.shields.io/github/license/awmleer/jorum.svg)
 [![npm](https://img.shields.io/npm/v/jorum.svg)](https://www.npmjs.com/package/jorum)
@@ -48,8 +48,26 @@ export class CounterBloc extends Bloc {
 
 ### Provider
 
+Basic usage:
+
 ```tsx
 <Provider of={CounterBloc}>
+  {/*...*/}
+</Provider>
+```
+
+Pass args to BLoC constructor:
+
+```tsx
+<Provider of={CounterBloc} args={[13]}>
+  {/*...*/}
+</Provider>
+```
+
+Use the given BLoC instance:
+
+```tsx
+<Provider of={CounterBloc} use={counterBloc}>
   {/*...*/}
 </Provider>
 ```
