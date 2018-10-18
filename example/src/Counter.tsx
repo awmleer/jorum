@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Consumer} from '../../lib/context'
-import {CounterBloc} from './bloc/counter-bloc'
+import {CounterBloc} from './bloc/counter.bloc'
 import {Subscribe} from '../../lib'
 
 export class Counter extends React.Component {
