@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
-    "sourceMap": true,
+    "sourceMap": false,
+    "declaration": true,
     "noImplicitAny": true,
-    "target": "es6",
+    "target": "es5",
     "module": "commonjs",
-    "jsx": "preserve"
+    "jsx": "react",
+    "lib": ["es6"],
+    "outDir": "./lib"
   },
   "include": [
-    "./lib/**/*"
+    "./src"
   ]
 }

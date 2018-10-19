@@ -6,7 +6,7 @@ gulp.task('clean-lib', function () {
     .pipe(clean())
 })
 
-gulp.task('prebuild', ['clean-lib'], function() {
-  return gulp.src('src/**')
-    .pipe(gulp.dest('lib/'))
-})
+// gulp.task('prebuild', ['clean-lib'], function() {
+//   return gulp.src('src/**')
+//     .pipe(gulp.dest('lib/'))
+// })

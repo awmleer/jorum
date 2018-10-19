@@ -12,20 +12,20 @@
     "lib"
   ],
   "scripts": {
-    "build": "gulp prebuild && tsc"
+    "build": "gulp clean-lib && tsc"
   },
   "peerDependencies": {
-    "react": "^16.5.2",
-    "rxjs": "^6.3.3"
+    "react": "16.x",
+    "rxjs": "6.x"
   },
   "devDependencies": {
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.8",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "rxjs": "^6.3.3",
+    "react": "16.5.x",
+    "react-dom": "16.5.x",
+    "rxjs": "6.3.x",
     "typescript": "^3.1.1"
   }
 }
