@@ -9,7 +9,11 @@
     "react",
     "rx.js",
     "rxjs",
-    "global state"
+    "ReactiveX",
+    "state",
+    "global state",
+    "state managment",
+    "model"
   ],
   "license": "MIT",
   "private": false,

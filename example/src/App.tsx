@@ -1,7 +1,6 @@
 import React from "react"
 import {CounterBloc, TestBloc} from './bloc/counter.bloc'
-import {Subscribe} from '../../lib'
-import {Consumer, Provider} from '../../lib'
+import {Consumer, Provider, Subscribe} from '../../lib'
 import {Counter} from './Counter'
 
 const counterBloc = new CounterBloc(100)
@@ -28,7 +27,16 @@ export class App extends React.Component<{}, State> {
         <button onClick={this.changeText}>switch bloc</button>
         {this.state.switcher ? (
           <Provider of={CounterBloc} use={counterBloc}>
+            <p>This one bloc:</p>
             <Counter/>
+            <Provider of={CounterBloc} use={counterBloc}>
+              <p>This the same bloc of the above one:</p>
+              <Counter/>
+            </Provider>
+            <Provider of={CounterBloc}>
+              <p>This is another bloc:</p>
+              <Counter/>
+            </Provider>
           </Provider>
         ) : (
           <Provider of={TestBloc}>

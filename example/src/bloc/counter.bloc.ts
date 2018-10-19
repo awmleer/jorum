@@ -11,7 +11,8 @@ export class CounterBloc extends Bloc {
       console.log('tick!')
     }, 1000)
     if (initialValue) {
-      this.count$ = new BehaviorSubject(initialValue)
+      this.count$.next(initialValue)
+    } else {
     }
     console.log('constructed!')
   }
