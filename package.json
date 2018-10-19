@@ -1,20 +1,18 @@
 {
   "name": "jorum",
-  "version": "0.3.2",
-  "main": "lib/index.js",
+  "version": "0.3.3",
+  "main": "index.js",
   "repository": "git@github.com:awmleer/jorum.git",
   "author": "awmleer <awmleer@sparker.xyz>",
   "description": "Model layer with rx.js for React applications.",
   "keywords": [
-    "react, rx.js",
+    "react",
+    "rx.js",
     "rxjs",
     "global state"
   ],
   "license": "MIT",
   "private": false,
-  "files": [
-    "lib"
-  ],
   "scripts": {
     "build": "gulp prebuild && tsc"
   },
