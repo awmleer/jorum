@@ -16,7 +16,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "gulp clean-lib && tsc"
+    "build": "gulp prebuild && tsc",
+    "publish": "publish lib"
   },
   "peerDependencies": {
     "react": "16.x",
