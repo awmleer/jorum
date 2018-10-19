@@ -4,6 +4,8 @@
   "main": "lib/index.js",
   "repository": "git@github.com:awmleer/jorum.git",
   "author": "awmleer <awmleer@sparker.xyz>",
+  "description": "Model layer with rx.js for React applications.",
+  "keywords": ["react, rx.js", "rxjs", "global state"],
   "license": "MIT",
   "private": false,
   "files": [
