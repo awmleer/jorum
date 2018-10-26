@@ -7,7 +7,11 @@
 
 Make your react application reactive using rxjs.
 
-**Warning: This framework is still in development.**
+## Feature
+
+- Lightweight.
+- Strongly typed.
+- No magic, just straightforward streams.
 
 ## Installation
 
