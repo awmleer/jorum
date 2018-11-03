@@ -1,4 +1,4 @@
-import {BehaviorSubject} from 'rxjs'
+import {BehaviorSubject, Observable} from 'rxjs'
 import {distinctUntilChanged, map} from 'rxjs/operators'
 import {Bloc} from '../../../lib'
 
@@ -21,7 +21,7 @@ export class CounterBloc extends Bloc {
 
   countAnother$ = new BehaviorSubject(10)
 
-  shouldShowResetButton$ = this.count$
+  shouldShowResetButton$: Observable<boolean> = this.count$
     .pipe(map(val => val > 10))
     .pipe(distinctUntilChanged())
 
