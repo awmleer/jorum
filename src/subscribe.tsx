@@ -77,3 +77,20 @@ export class Subscribe extends Component<Props, State> {
   }
 
 }
+
+export function useObservable<T>(observable: Observable<T>) {
+  const [state, setState] = React.useState(null)
+  React.useEffect(() => {
+    if (observable) {
+      const subscription = observable.subscribe({
+        next: (v) => {
+          setState(v)
+        }
+      })
+      return () => {
+        subscription.unsubscribe()
+      }
+    }
+  })
+  return state
+}

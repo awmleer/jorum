@@ -20,3 +20,8 @@ export class Consumer<T extends Bloc> extends React.Component<Props<T>, {}> {
     )
   }
 }
+
+export function useBloc<T extends Bloc>(B: AbstractBloc<T>): T {
+  const Context = (B as any as typeof Bloc).getContext()
+  return React.useContext(Context) as T
+}
