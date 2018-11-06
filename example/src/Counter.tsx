@@ -6,7 +6,7 @@ export class Counter extends React.Component {
   render() {
     return (
       <Consumer of={CounterBloc}>
-        {(counterBloc:CounterBloc) => (
+        {counterBloc => (
           <React.Fragment>
             <Subscribe to={[counterBloc.count$, counterBloc.countAnother$]}>
               {(count, countAnother) => (
