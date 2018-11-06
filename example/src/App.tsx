@@ -1,6 +1,6 @@
 import React from "react"
 import {CounterBloc, TestBloc} from './bloc/counter.bloc'
-import {Consumer, Provider, Subscribe} from '../../lib'
+import {Consumer, Provider, Subscribe} from 'jorum'
 import {Counter} from './Counter'
 
 const counterBloc = new CounterBloc(100)
@@ -9,7 +9,7 @@ interface State {
   switcher: boolean
 }
 
-export class App extends React.Component<{}, State> {
+export class OldApp extends React.Component<{}, State> {
   state = {
     switcher: true
   }
@@ -56,3 +56,12 @@ export class App extends React.Component<{}, State> {
   }
 }
 
+export function App() {
+  const [count, setCount] = React.useState(1)
+  return (
+    <Provider of={CounterBloc}>
+      <p>This is another bloc:</p>
+      <Counter/>
+    </Provider>
+  )
+}

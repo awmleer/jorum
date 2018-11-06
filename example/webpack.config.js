@@ -14,7 +14,7 @@ module.exports = {
       template: './src/index.html',
       title: 'Output Management',
     }),
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
   ],
 
   output: {

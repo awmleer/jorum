@@ -1,6 +1,6 @@
 import {BehaviorSubject, Observable} from 'rxjs'
 import {distinctUntilChanged, map} from 'rxjs/operators'
-import {Bloc} from '../../../lib'
+import {Bloc} from 'jorum'
 
 export class CounterBloc extends Bloc {
   constructor(initialValue?: number) {
