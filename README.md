@@ -78,12 +78,20 @@ Use the given BLoC instance:
 
 ### Consumer
 
+Use `Consumer` component with render props pattern:
+
 ```tsx
 <Consumer of={CounterBloc}>
   {(counterBloc) => (
     /*...*/
   )}
 </Consumer>
+```
+
+Or use custom hook:
+
+```js
+const counterBloc = useBloc(CounterBloc)
 ```
 
 ### Subscribe
@@ -109,6 +117,12 @@ Subscribe to multiple observables:
     </div>
   )}
 </Subscribe>
+```
+
+Or use custom hook:
+
+```js
+const count = useObservable(counterBloc.count$)
 ```
 
 ## Example
