@@ -31,5 +31,6 @@ export class CounterBloc extends Bloc {
 }
 
 export class TestBloc extends Bloc {
-  a$ = new BehaviorSubject('test-a')
+  a$ = new BehaviorSubject(null)
+  // a$ = new Observable()
 }

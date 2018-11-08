@@ -9,7 +9,7 @@ interface State {
   switcher: boolean
 }
 
-export class OldApp extends React.Component<{}, State> {
+export class App extends React.Component<{}, State> {
   state = {
     switcher: true
   }
@@ -40,10 +40,11 @@ export class OldApp extends React.Component<{}, State> {
           </Provider>
         ) : (
           <Provider of={TestBloc}>
+            <h2>Test</h2>
             <Consumer of={TestBloc}>
-              {testBloc => (
+              {(testBloc: TestBloc) => (
                 <Subscribe to={testBloc.a$}>
-                  {a => (
+                  {(a:any) => a && (
                     <p>{a}</p>
                   )}
                 </Subscribe>
@@ -56,12 +57,12 @@ export class OldApp extends React.Component<{}, State> {
   }
 }
 
-export function App() {
-  const [count, setCount] = React.useState(1)
-  return (
-    <Provider of={CounterBloc}>
-      <p>This is another bloc:</p>
-      <Counter/>
-    </Provider>
-  )
-}
+// export function App() {
+//   const [count, setCount] = React.useState(1)
+//   return (
+//     <Provider of={CounterBloc}>
+//       <p>This is another bloc:</p>
+//       <Counter/>
+//     </Provider>
+//   )
+// }

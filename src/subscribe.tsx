@@ -96,6 +96,6 @@ export function useObservable<T>(observable: Observable<T>) {
         subscription.unsubscribe()
       }
     }
-  })
+  },[])
   return state
 }
