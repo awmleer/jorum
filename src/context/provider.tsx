@@ -1,21 +1,34 @@
 import * as React from 'react'
 import {AbstractBloc, Bloc} from '../bloc'
+import {RefObject} from 'react'
 
 interface Props<T extends Bloc> {
   of: AbstractBloc<T>
   args?: any[]
   use?: T
+  blocRef?: RefObject<T>
   children: React.ReactNode
 }
 
 export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
-  private bloc: T = null
+  private _bloc: T = null
+  private get bloc(): T {
+    return this._bloc
+  }
+  private set bloc(b: T) {
+    this._bloc = b
+    if (this.props.blocRef) {
+      // @ts-ignore
+      this.props.blocRef.current = this.bloc
+    }
+  }
+
   constructor(props: Props<T>) {
     super(props)
-    if (this.props.use) {
-      this.bloc = this.props.use
+    if (props.use) {
+      this.bloc = props.use
     } else {
-      this.createBloc(this.props.of, this.props.args)
+      this.createBloc(props.of, props.args)
     }
   }
 

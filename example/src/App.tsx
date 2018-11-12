@@ -14,10 +14,16 @@ export class App extends React.Component<{}, State> {
     switcher: true
   }
 
+  testBlocRef = React.createRef<TestBloc>()
+
   changeText = () => {
     this.setState(prevState => ({
       switcher: !prevState.switcher
     }))
+  }
+
+  componentDidUpdate() {
+    console.log(this.testBlocRef.current)
   }
 
   render() {
@@ -39,7 +45,7 @@ export class App extends React.Component<{}, State> {
             </Provider>
           </Provider>
         ) : (
-          <Provider of={TestBloc}>
+          <Provider of={TestBloc} blocRef={this.testBlocRef}>
             <h2>Test</h2>
             <Consumer of={TestBloc}>
               {(testBloc: TestBloc) => (
