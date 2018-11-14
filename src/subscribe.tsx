@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Component, ReactNode} from 'react'
-import {Observable, Subscription} from 'rxjs'
+import {BehaviorSubject, Observable, Subscription} from 'rxjs'
 
 interface PropsMulti {
   to: Observable<any>[]
@@ -60,6 +60,8 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
   subscribeTo(to: Observable<any> | Observable<any>[]) {
     if (!to) return
     if (Array.isArray(to)) {
+      //TODO: remove feature of subscribing to multiple observables at one time
+      console.warn('Subscribing to multiple observables at one time will be deprecated in the next major version. Please avoid using this feature.')
       to.forEach(this.handleObservable.bind(this))
     } else {
       this.handleObservable(to, 0);
@@ -83,19 +85,25 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
   
 }
 
-export function useObservable<T>(observable: Observable<T>) {
-  const [state, setState] = React.useState(null)
+export function useObservable<T>(observable: Observable<T>): T {
+  let initialValue = (observable as BehaviorSubject<T>).value
+  if (initialValue === undefined) {
+    initialValue = null
+  }
+  const [state, setState] = React.useState<T>(initialValue)
   React.useEffect(() => {
     if (observable) {
+      let valid = (initialValue === null)
       const subscription = observable.subscribe({
         next: (v) => {
-          setState(v)
+          if (valid) setState(v)
+          valid = true
         }
       })
       return () => {
         subscription.unsubscribe()
       }
     }
-  },[])
+  },[observable])
   return state
 }

@@ -50,9 +50,12 @@ export class App extends React.Component<{}, State> {
             <Consumer of={TestBloc}>
               {(testBloc: TestBloc) => (
                 <Subscribe to={testBloc.a$}>
-                  {(a:any) => a && (
-                    <p>{a}</p>
-                  )}
+                  {(a:any) => {
+                    console.log('a is', a)
+                    return a && (
+                      <p>{a}</p>
+                    )
+                  }}
                 </Subscribe>
               )}
             </Consumer>
