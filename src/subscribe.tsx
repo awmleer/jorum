@@ -86,14 +86,12 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
 }
 
 export function useObservable<T>(observable: Observable<T>): T {
-  let initialValue = (observable as BehaviorSubject<T>).value
-  if (initialValue === undefined) {
-    initialValue = null
-  }
-  const [state, setState] = React.useState<T>(initialValue)
+  const initialValue = (observable as BehaviorSubject<T>).value
+  const isBehaviorSubject = initialValue === undefined
+  const [state, setState] = React.useState<T>(isBehaviorSubject ? null : initialValue)
   React.useEffect(() => {
     if (observable) {
-      let valid = (initialValue === null)
+      let valid = !isBehaviorSubject
       const subscription = observable.subscribe({
         next: (v) => {
           if (valid) setState(v)
