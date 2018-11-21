@@ -3,9 +3,11 @@ import {distinctUntilChanged, map} from 'rxjs/operators'
 import {Bloc} from 'jorum'
 
 export class CounterBloc extends Bloc {
+  interval: number = null
+
   constructor(initialValue?: number) {
     super()
-    setInterval(() => {
+    this.interval = window.setInterval(() => {
       this.count$.next(this.count$.value + 1)
       this.countAnother$.next(this.countAnother$.value + 2)
       console.log('tick!')
@@ -28,9 +30,16 @@ export class CounterBloc extends Bloc {
   resetCounter = () => {
     this.count$.next(0)
   }
+
+  blocWillDestroy(): void {
+    window.clearInterval(this.interval)
+  }
 }
 
 export class TestBloc extends Bloc {
   a$ = new BehaviorSubject(1)
   // a$ = new Observable()
+  blocWillDestroy(): void {
+    console.log('destroy!')
+  }
 }

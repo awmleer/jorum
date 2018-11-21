@@ -11,4 +11,5 @@ export class Bloc {
     }
     return ctor.context
   }
+  blocWillDestroy?(): void
 }

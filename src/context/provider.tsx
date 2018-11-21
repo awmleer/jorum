@@ -16,6 +16,11 @@ export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
     return this._bloc
   }
   private set bloc(b: T) {
+    if (this._bloc && !this.props.use) {
+      if (this._bloc.blocWillDestroy) {
+        this._bloc.blocWillDestroy()
+      }
+    }
     this._bloc = b
     if (this.props.blocRef) {
       // @ts-ignore
@@ -48,6 +53,10 @@ export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
         this.createBloc(nextProps.of, nextProps.args)
       }
     }
+  }
+
+  componentWillUnmount(): void {
+    this.bloc = null
   }
 
   render() {
