@@ -27,10 +27,14 @@ npm install rxjs jorum --save
 
 BLoC stands for "Business Logic Component".
 
-```typescript
+It is basically a plain class except it has a `blocWillDestroy()` method. You can use this method to do some cleanup work when bloc is going to be destroyed.
+
+```javascript
 export class CounterBloc extends Bloc {
+  interval = null
   constructor() {
-    setInterval(() => {
+    super()
+    this.interval = setInterval(() => {
       this.count$.next(this.count$.value + 1)
       this.countAnother$.next(this.countAnother$.value + 2)
     }, 1000)
@@ -46,6 +50,10 @@ export class CounterBloc extends Bloc {
 
   resetCounter = () => {
     this.count$.next(0)
+  }
+  
+  blocWillDestroy(){
+    clearInterval(this.interval)
   }
 }
 ```
