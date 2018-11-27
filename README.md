@@ -1,11 +1,12 @@
 #  Jorum
 
-![GitHub](https://img.shields.io/github/license/awmleer/jorum.svg)
+[![GitHub](https://img.shields.io/github/license/awmleer/jorum.svg)](https://github.com/awmleer/jorum)
 [![npm](https://img.shields.io/npm/v/jorum.svg)](https://www.npmjs.com/package/jorum)
-![npm](https://img.shields.io/npm/dw/jorum.svg)
-![GitHub repo size in bytes](https://img.shields.io/github/repo-size/awmleer/jorum.svg)
+[![npm](https://img.shields.io/npm/dw/jorum.svg)](https://www.npmjs.com/package/jorum)
+[![GitHub repo size in bytes](https://img.shields.io/github/repo-size/awmleer/jorum.svg)](https://github.com/awmleer/jorum)
+[![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/jorum.svg)](https://www.npmjs.com/package/jorum)
 
-Make your react application reactive using rxjs.
+Model layer with rx.js for React applications.
 
 ## Feature
 
