@@ -13,7 +13,7 @@ type ComponentProps<T> = Props<T> & {
   children: React.ReactNode
 }
 
-export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
+export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>, {}> {
   private _bloc: T = null
   private get bloc(): T {
     return this._bloc
@@ -31,7 +31,7 @@ export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
     }
   }
 
-  constructor(props: Props<T>) {
+  constructor(props: ComponentProps<T>) {
     super(props)
     if (props.use) {
       this.bloc = props.use

@@ -84,6 +84,19 @@ Use the given BLoC instance:
 </Provider>
 ```
 
+Use the `withProvider` HOC:
+
+```jsx
+const Counter = withProvider({
+  of: CounterBloc,
+  args: [13]
+})(() => {
+  return (
+    /*...*/
+  )
+})
+```
+
 ### Consumer
 
 Use `Consumer` component with render props pattern:
