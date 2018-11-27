@@ -1,6 +1,6 @@
 {
   "name": "jorum",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "main": "index.js",
   "repository": "git@github.com:awmleer/jorum.git",
   "author": "awmleer <awmleer@sparker.xyz>",
@@ -25,12 +25,12 @@
     "rxjs": "6.x"
   },
   "devDependencies": {
-    "@types/react": "^16.4.14",
+    "@types/react": "16.7.x",
     "@types/react-dom": "^16.0.8",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
-    "react": "16.7.0-alpha.0",
-    "react-dom": "16.7.0-alpha.0",
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2",
     "rxjs": "6.3.x",
     "typescript": "^3.1.1"
   }

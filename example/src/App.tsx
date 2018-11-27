@@ -1,9 +1,32 @@
-import React from "react"
+import React, {FC} from 'react'
 import {CounterBloc, TestBloc} from './bloc/counter.bloc'
-import {Consumer, Provider, Subscribe} from 'jorum'
+import {Consumer, Provider, Subscribe, withProvider} from 'jorum'
 import {Counter} from './Counter'
 
 const counterBloc = new CounterBloc(100)
+
+const Test: React.ComponentType = withProvider({
+  of: TestBloc
+})(() => {
+  return (
+    <>
+      <h2>Test</h2>
+      <Consumer of={TestBloc}>
+        {(testBloc: TestBloc) => (
+          <Subscribe to={testBloc.a$}>
+            {(a:any) => {
+              console.log('a is', a)
+              return a && (
+                <p>{a}</p>
+              )
+            }}
+          </Subscribe>
+        )}
+      </Consumer>
+    </>
+  )
+})
+
 
 interface State {
   switcher: boolean
@@ -13,19 +36,19 @@ export class App extends React.Component<{}, State> {
   state = {
     switcher: true
   }
-
+  
   testBlocRef = React.createRef<TestBloc>()
-
+  
   changeText = () => {
     this.setState(prevState => ({
       switcher: !prevState.switcher
     }))
   }
-
+  
   componentDidUpdate() {
     console.log(this.testBlocRef.current)
   }
-
+  
   render() {
     return (
       <div>
@@ -45,21 +68,7 @@ export class App extends React.Component<{}, State> {
             </Provider>
           </Provider>
         ) : (
-          <Provider of={TestBloc} blocRef={this.testBlocRef}>
-            <h2>Test</h2>
-            <Consumer of={TestBloc}>
-              {(testBloc: TestBloc) => (
-                <Subscribe to={testBloc.a$}>
-                  {(a:any) => {
-                    console.log('a is', a)
-                    return a && (
-                      <p>{a}</p>
-                    )
-                  }}
-                </Subscribe>
-              )}
-            </Consumer>
-          </Provider>
+          <Test />
         )}
       </div>
     )

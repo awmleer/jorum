@@ -7,6 +7,9 @@ interface Props<T extends Bloc> {
   args?: any[]
   use?: T
   blocRef?: RefObject<T>
+}
+
+type ComponentProps<T> = Props<T> & {
   children: React.ReactNode
 }
 
@@ -67,5 +70,17 @@ export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
         {this.props.children}
       </Context.Provider>
     )
+  }
+}
+
+export function withProvider<T>(providerProps: Props<T>) {
+  return function<P> (C: React.ComponentType<P>) {
+    return function(props: P) {
+      return (
+        <Provider {...providerProps}>
+          <C {...props} />
+        </Provider>
+      )
+    }
   }
 }
