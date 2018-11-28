@@ -73,9 +73,13 @@ export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>,
   }
 }
 
-export function withProvider<T>(providerProps: Props<T>) {
-  return function<P> (C: React.ComponentType<P>) {
+
+export function withProvider<P, T=any>(providerProps: ((props: P) => Props<T>) | Props<T>) {
+  return function (C: React.ComponentType<P>): React.ComponentType<P> {
     return function(props: P) {
+      if (typeof providerProps === 'function') {
+        providerProps = providerProps(props)
+      }
       return (
         <Provider {...providerProps}>
           <C {...props} />

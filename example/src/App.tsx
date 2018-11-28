@@ -5,12 +5,17 @@ import {Counter} from './Counter'
 
 const counterBloc = new CounterBloc(100)
 
-const Test: React.ComponentType = withProvider({
-  of: TestBloc
-})(() => {
+interface TestProps {
+  initial: number
+}
+
+const Test = withProvider<TestProps>((props) => ({
+  of: TestBloc,
+  args: [props.initial]
+}))((props) => {
   return (
     <>
-      <h2>Test</h2>
+      <h2>Test{props.initial}</h2>
       <Consumer of={TestBloc}>
         {(testBloc: TestBloc) => (
           <Subscribe to={testBloc.a$}>
@@ -36,19 +41,19 @@ export class App extends React.Component<{}, State> {
   state = {
     switcher: true
   }
-  
+
   testBlocRef = React.createRef<TestBloc>()
-  
+
   changeText = () => {
     this.setState(prevState => ({
       switcher: !prevState.switcher
     }))
   }
-  
+
   componentDidUpdate() {
     console.log(this.testBlocRef.current)
   }
-  
+
   render() {
     return (
       <div>
@@ -68,7 +73,7 @@ export class App extends React.Component<{}, State> {
             </Provider>
           </Provider>
         ) : (
-          <Test />
+          <Test initial={123} />
         )}
       </div>
     )

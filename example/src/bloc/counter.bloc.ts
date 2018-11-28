@@ -39,6 +39,13 @@ export class CounterBloc extends Bloc {
 export class TestBloc extends Bloc {
   a$ = new BehaviorSubject(1)
   // a$ = new Observable()
+  constructor(inital?: number) {
+    super()
+    if (inital) {
+      this.a$.next(inital)
+    }
+  }
+
   blocWillDestroy(): void {
     console.log('destroy!')
   }
