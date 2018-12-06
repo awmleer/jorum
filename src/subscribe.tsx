@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Component, ReactNode} from 'react'
-import {BehaviorSubject, Observable, Subscription} from 'rxjs'
+import {BehaviorSubject, Observable, Subscribable, Subscription} from 'rxjs'
 
 interface PropsMulti {
   to: Observable<any>[]
@@ -85,14 +85,14 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
   
 }
 
-export function useObservable<T>(observable: Observable<T>): T {
-  const initialValue = (observable as BehaviorSubject<T>).value
+export function useStream<T>(stream: Subscribable<T>): T {
+  const initialValue = (stream as BehaviorSubject<T>).value
   const isBehaviorSubject = initialValue === undefined
   const [state, setState] = React.useState<T>(isBehaviorSubject ? null : initialValue)
   React.useEffect(() => {
-    if (observable) {
+    if (stream) {
       let valid = !isBehaviorSubject
-      const subscription = observable.subscribe({
+      const subscription = stream.subscribe({
         next: (v) => {
           if (valid) setState(v)
           valid = true
@@ -102,6 +102,11 @@ export function useObservable<T>(observable: Observable<T>): T {
         subscription.unsubscribe()
       }
     }
-  },[observable])
+  },[stream])
   return state
+}
+
+export function useObservable<T>(observable: Observable<T>): T {
+  // console.warn('useObservable hook is deprecated and will be removed in the next major version. Please use useStream instead.')
+  return useStream(observable)
 }
