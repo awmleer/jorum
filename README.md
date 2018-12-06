@@ -144,7 +144,7 @@ Subscribe to multiple observables:
 Or use custom hook:
 
 ```js
-const count = useObservable(counterBloc.count$)
+const count = useStream(counterBloc.count$)
 ```
 
 ## Example
