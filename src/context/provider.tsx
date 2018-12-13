@@ -2,14 +2,14 @@ import * as React from 'react'
 import {AbstractBloc, Bloc} from '../bloc'
 import {RefObject} from 'react'
 
-interface Props<T extends Bloc> {
+export interface ProviderProps<T extends Bloc> {
   of: AbstractBloc<T>
   args?: any[]
   use?: T
   blocRef?: RefObject<T>
 }
 
-type ComponentProps<T> = Props<T> & {
+type ComponentProps<T> = ProviderProps<T> & {
   children: React.ReactNode
 }
 
@@ -48,7 +48,7 @@ export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>,
     }
   }
 
-  componentWillReceiveProps(nextProps: Props<T>) {
+  componentWillReceiveProps(nextProps: ProviderProps<T>) {
     if (nextProps.use && this.props.use !== nextProps.use) {
       this.bloc = nextProps.use
     } else {
@@ -74,7 +74,7 @@ export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>,
 }
 
 
-export function withProvider<P, T=any>(providerProps: ((props: P) => Props<T>) | Props<T>) {
+export function withProvider<P, T=any>(providerProps: ((props: P) => ProviderProps<T>) | ProviderProps<T>) {
   return function (C: React.ComponentType<P>): React.ComponentType<P> {
     return function(props: P) {
       if (typeof providerProps === 'function') {
