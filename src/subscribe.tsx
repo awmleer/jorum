@@ -88,7 +88,7 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
 export function useStream<T>(stream: Subscribable<T>): T {
   const initialValue = (stream as BehaviorSubject<T>).value
   const isBehaviorSubject = initialValue !== undefined
-  const [state, setState] = React.useState<T>(isBehaviorSubject ? null : initialValue)
+  const [state, setState] = React.useState<T>(isBehaviorSubject ? initialValue : null)
   React.useEffect(() => {
     if (stream) {
       let valid = !isBehaviorSubject
