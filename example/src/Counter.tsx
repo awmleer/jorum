@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {CounterBloc} from './bloc/counter.bloc'
-import {Consumer, Subscribe, useBloc, useObservable} from 'jorum'
-import {suspense} from 'jorum/suspense'
+import {Consumer, Subscribe, useBloc, useObservable, suspense} from 'jorum'
 
 // export class Counter extends React.Component {
 //   render() {

@@ -1,8 +1,7 @@
 import React, {FC} from 'react'
 import {CounterBloc, TestBloc} from './bloc/counter.bloc'
-import {Consumer, Provider, Subscribe, useBloc, useStream, withProvider} from 'jorum'
+import {Consumer, Provider, Subscribe, useBloc, useStream, withProvider, suspense} from 'jorum'
 import {Counter} from './Counter'
-import {suspense} from 'jorum/suspense'
 
 const counterBloc = new CounterBloc(100)
 
