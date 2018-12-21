@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable} from 'rxjs'
+import {BehaviorSubject, Observable, Subject} from 'rxjs'
 import {distinctUntilChanged, map} from 'rxjs/operators'
 import {Bloc} from 'jorum'
 
@@ -38,12 +38,16 @@ export class CounterBloc extends Bloc {
 
 export class TestBloc extends Bloc {
   a$ = new BehaviorSubject(1)
+  b$ = new Subject()
   // a$ = new Observable()
   constructor(inital?: number) {
     super()
     if (inital) {
       this.a$.next(inital)
     }
+    setTimeout(() => {
+      this.b$.next('b')
+    }, 10000)
   }
 
   blocWillDestroy(): void {

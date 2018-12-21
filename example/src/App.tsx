@@ -1,7 +1,8 @@
 import React, {FC} from 'react'
 import {CounterBloc, TestBloc} from './bloc/counter.bloc'
-import {Consumer, Provider, Subscribe, withProvider} from 'jorum'
+import {Consumer, Provider, Subscribe, useBloc, useStream, withProvider} from 'jorum'
 import {Counter} from './Counter'
+import {suspense} from 'jorum/suspense'
 
 const counterBloc = new CounterBloc(100)
 
@@ -12,10 +13,13 @@ interface TestProps {
 const Test = withProvider<TestProps>((props) => ({
   of: TestBloc,
   args: [props.initial]
-}))((props) => {
+}))(suspense((props) => {
+  const testBloc = useBloc(TestBloc)
+  const b = useStream(testBloc.b$)
   return (
     <>
       <h2>Test{props.initial}</h2>
+      <p>b is: {b}</p>
       <Consumer of={TestBloc}>
         {(testBloc: TestBloc) => (
           <Subscribe to={testBloc.a$}>
@@ -30,7 +34,7 @@ const Test = withProvider<TestProps>((props) => ({
       </Consumer>
     </>
   )
-})
+}))
 
 
 interface State {

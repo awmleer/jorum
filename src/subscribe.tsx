@@ -1,6 +1,7 @@
 import * as React from 'react'
-import {Component, ReactNode} from 'react'
-import {BehaviorSubject, Observable, Subscribable, Subscription} from 'rxjs'
+import {Component, ReactNode, useRef} from 'react'
+import {Observable, Subscribable, Subscription} from 'rxjs'
+import {StreamNotInitialized} from './suspense'
 
 interface PropsMulti {
   to: Observable<any>[]
@@ -85,24 +86,29 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
   
 }
 
-export function useStream<T>(stream: Subscribable<T>): T {
-  const initialValue = (stream as BehaviorSubject<T>).value
-  const isBehaviorSubject = initialValue !== undefined
-  const [state, setState] = React.useState<T>(isBehaviorSubject ? initialValue : null)
+export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
+  const initializedRef = useRef(false)
+  const [state, setState] = React.useState<T>(initialValue)
+  if (initialValue !== undefined) {
+    initializedRef.current = true
+  }
   React.useEffect(() => {
     if (stream) {
-      let valid = !isBehaviorSubject
       const subscription = stream.subscribe({
         next: (v) => {
-          if (valid) setState(v)
-          valid = true
+          initializedRef.current = true
+          setState(v)
         }
       })
       return () => {
         subscription.unsubscribe()
+        initializedRef.current = false
       }
     }
   },[stream])
+  if (!initializedRef.current) {
+    throw new StreamNotInitialized()
+  }
   return state
 }
 

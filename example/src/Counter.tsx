@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {CounterBloc} from './bloc/counter.bloc'
 import {Consumer, Subscribe, useBloc, useObservable} from 'jorum'
+import {suspense} from 'jorum/suspense'
 
 // export class Counter extends React.Component {
 //   render() {
@@ -31,7 +32,7 @@ import {Consumer, Subscribe, useBloc, useObservable} from 'jorum'
 // }
 
 
-export function Counter(props: {}) {
+export const Counter = suspense((props: {}) => {
   const [state, setState] = React.useState(123)
   const counterBloc = useBloc(CounterBloc)
   const count = useObservable(counterBloc.count$)
@@ -45,4 +46,4 @@ export function Counter(props: {}) {
       </div>
     </React.Fragment>
   )
-}
+})
