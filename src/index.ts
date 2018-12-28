@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import {Subscribe, useObservable, useStream} from './subscribe'
 import {Bloc} from './bloc'
 import {Consumer, useBloc} from './context/consumer'

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {AbstractBloc, Bloc} from '../bloc'
+import {AbstractBloc, Bloc, contextSymbol} from '../bloc'
 import {RefObject} from 'react'
 
 export interface ProviderProps<T extends Bloc> {
@@ -64,7 +64,7 @@ export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>,
 
   render() {
     const { of } = this.props
-    const Context = (of as any as typeof Bloc).getContext()
+    const Context = Reflect.getMetadata(contextSymbol, of)
     return (
       <Context.Provider value={this.bloc}>
         {this.props.children}

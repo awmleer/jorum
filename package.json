@@ -37,5 +37,8 @@
     "rxjs": "6.3.x",
     "ts-jest": "^23.10.5",
     "typescript": "^3.1.1"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.12"
   }
 }
