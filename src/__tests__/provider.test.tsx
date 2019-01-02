@@ -1,10 +1,7 @@
 import * as TestRenderer from 'react-test-renderer'
-import {ProviderFC} from '../context/provider'
 import {FC} from 'react'
-import {bloc} from '../bloc'
 import * as React from 'react'
-import {useBloc} from '..'
-import {inject} from '../di/inject'
+import {bloc, inject, Provider, useBloc} from '..'
 
 
 @bloc
@@ -40,9 +37,9 @@ const ShowBar: FC = () => {
 
 it('provider initialize', function () {
   const renderer = TestRenderer.create(
-    <ProviderFC of={FooBloc}>
+    <Provider of={FooBloc}>
       <ShowFoo />
-    </ProviderFC>
+    </Provider>
   )
   expect(renderer.toJSON()).toMatchSnapshot()
 })
@@ -64,9 +61,9 @@ it('provider with use', function () {
     
     render() {
       return (
-        <ProviderFC of={FooBloc} use={this.state.bloc}>
+        <Provider of={FooBloc} use={this.state.bloc}>
           <ShowFoo />
-        </ProviderFC>
+        </Provider>
       )
     }
   }
@@ -84,11 +81,11 @@ it('provider with use', function () {
 
 it('provider with auto-injected dependencies', function () {
   const renderer = TestRenderer.create(
-    <ProviderFC of={FooBloc}>
-      <ProviderFC of={BarBloc}>
+    <Provider of={FooBloc}>
+      <Provider of={BarBloc}>
         <ShowBar />
-      </ProviderFC>
-    </ProviderFC>
+      </Provider>
+    </Provider>
   )
   expect(renderer.toJSON()).toMatchSnapshot()
 })
