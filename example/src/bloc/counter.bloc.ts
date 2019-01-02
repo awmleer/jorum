@@ -1,12 +1,12 @@
 import {BehaviorSubject, Observable, Subject} from 'rxjs'
 import {distinctUntilChanged, map} from 'rxjs/operators'
-import {Bloc} from 'jorum'
+import {bloc, Bloc} from 'jorum'
 
-export class CounterBloc extends Bloc {
+@bloc
+export class CounterBloc implements Bloc {
   interval: number = null
 
   constructor(initialValue?: number) {
-    super()
     this.interval = window.setInterval(() => {
       this.count$.next(this.count$.value + 1)
       this.countAnother$.next(this.countAnother$.value + 2)
@@ -36,12 +36,12 @@ export class CounterBloc extends Bloc {
   }
 }
 
-export class TestBloc extends Bloc {
+@bloc
+export class TestBloc implements Bloc {
   a$ = new BehaviorSubject(1)
   b$ = new Subject()
   // a$ = new Observable()
   constructor(inital?: number) {
-    super()
     if (inital) {
       this.a$.next(inital)
     }

@@ -6,7 +6,6 @@ import {injectMetadataKey} from '../inject'
 export interface ProviderProps<T> {
   of: ConstructorType<T>
   args?: any[]
-  use?: T
   blocRef?: RefObject<T>
 }
 
@@ -29,17 +28,16 @@ class BlocContainer {
     this._bloc = newBloc
   }
   
+  constructor(
+    public blocType: ConstructorType<Bloc>
+  ) {}
+  
   hasBloc() {
     return this._bloc !== undefined
   }
 }
 
 export const Provider: FC<Props<any>> = function<T>(props: Props<T>) {
-  const containerRef = useRef(
-    new BlocContainer()
-  )
-  const Context = Reflect.getMetadata(contextSymbol, props.of)
-  
   function createBloc(Bloc: ConstructorType<T>, args?: any[]) {
     const injects = Reflect.getMetadata(injectMetadataKey, Bloc) || []
     const paramTypes = Reflect.getMetadata('design:paramtypes', Bloc) || []
@@ -50,14 +48,20 @@ export const Provider: FC<Props<any>> = function<T>(props: Props<T>) {
     return new Bloc(...args)
   }
   
-  if (props.use) {
-    containerRef.current.bloc = props.use
-  } else {
-    if (!containerRef.current.hasBloc()) {
-      containerRef.current.bloc = createBloc(props.of, props.args)
-    }
+  const containerRef = useRef(
+    new BlocContainer(props.of)
+  )
+  
+  if (containerRef.current.blocType !== props.of) {
+    containerRef.current.blocType = props.of
+    containerRef.current.bloc = createBloc(props.of, props.args)
   }
   
+  if (!containerRef.current.hasBloc()) {
+    containerRef.current.bloc = createBloc(props.of, props.args)
+  }
+  
+  const Context = Reflect.getMetadata(contextSymbol, props.of)
   return (
     <Context.Provider value={containerRef.current.bloc}>
       {props.children}

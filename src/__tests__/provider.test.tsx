@@ -10,6 +10,11 @@ class FooBloc {
 }
 
 @bloc
+class FaaBloc {
+  faa: string = 'this is faa'
+}
+
+@bloc
 class BarBloc {
   constructor(
     @inject public fooBloc: FooBloc
@@ -21,6 +26,15 @@ const ShowFoo: FC = () => {
   return (
     <div>
       {fooBloc.foo}
+    </div>
+  )
+}
+
+const ShowFaa: FC = () => {
+  const faaBloc = useBloc(FaaBloc)
+  return (
+    <div>
+      {faaBloc.faa}
     </div>
   )
 }
@@ -45,36 +59,43 @@ it('provider initialize', function () {
 })
 
 
-it('provider with use', function () {
-  class Container extends React.Component<{}, any> {
+it('provider of prop change', function () {
+  interface State {
+    switcher: boolean
+  }
+  class Container extends React.Component<{}, State> {
     state = {
-      bloc: new FooBloc()
+      switcher: true
     }
     
-    changeUse() {
-      const anotherFooBloc = new FooBloc()
-      anotherFooBloc.foo = 'bbb'
-      this.setState({
-        bloc: anotherFooBloc
-      })
+    change() {
+      this.setState((preState) => ({
+        switcher: !preState.switcher
+      }))
     }
     
     render() {
-      return (
-        <Provider of={FooBloc} use={this.state.bloc}>
-          <ShowFoo />
-        </Provider>
-      )
+      if (this.state.switcher) {
+        return (
+          <Provider of={FooBloc}>
+            <ShowFoo />
+          </Provider>
+        )
+      } else {
+        return (
+          <Provider of={FaaBloc}>
+            <ShowFaa />
+          </Provider>
+        )
+      }
     }
   }
   
-  const testBloc = new FooBloc()
-  testBloc.foo = 'bbb'
   const renderer = TestRenderer.create(
     <Container/>
   )
   expect(renderer.toJSON()).toMatchSnapshot()
-  renderer.root.instance.changeUse()
+  renderer.root.instance.change()
   expect(renderer.toJSON()).toMatchSnapshot()
 })
 
