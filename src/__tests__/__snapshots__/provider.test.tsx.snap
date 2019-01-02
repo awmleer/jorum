@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`provider initialize 1`] = `
+<div>
+  aaa
+</div>
+`;
+
+exports[`provider with use 1`] = `
+<div>
+  bbb
+</div>
+`;

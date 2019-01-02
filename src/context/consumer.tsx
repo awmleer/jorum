@@ -1,16 +1,16 @@
 import * as React from 'react'
-import {AbstractBloc, Bloc} from '../bloc'
+import {ConstructorType, Bloc, contextSymbol} from '../bloc'
 import {ReactNode} from 'react'
 
 interface Props<T extends Bloc> {
-  of: AbstractBloc<T>
+  of: ConstructorType<T>
   children: (bloc: T)=>ReactNode
 }
 
 export class Consumer<T extends Bloc> extends React.Component<Props<T>, {}> {
   render() {
     const { of } = this.props
-    const Context = (of as any as typeof Bloc).getContext()
+    const Context = Reflect.getMetadata(contextSymbol, of)
     return (
       <Context.Consumer>
         {(value: T) => (
@@ -21,7 +21,7 @@ export class Consumer<T extends Bloc> extends React.Component<Props<T>, {}> {
   }
 }
 
-export function useBloc<T extends Bloc>(B: AbstractBloc<T>): T {
-  const Context = (B as any as typeof Bloc).getContext()
+export function useBloc<T>(B: ConstructorType<T>): T {
+  const Context = Reflect.getMetadata(contextSymbol, B)
   return React.useContext(Context) as T
 }

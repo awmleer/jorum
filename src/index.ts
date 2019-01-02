@@ -1,8 +1,6 @@
 import 'reflect-metadata'
-import {Subscribe, useObservable, useStream} from './subscribe'
-import {Bloc} from './bloc'
-import {Consumer, useBloc} from './context/consumer'
-import {Provider, ProviderProps, withProvider} from './context/provider'
-import {suspense} from './suspense'
-
-export {Subscribe, Bloc, Consumer, Provider, useBloc, useObservable, useStream, withProvider, ProviderProps, suspense}
+export {Subscribe, useObservable, useStream} from './subscribe'
+export {Bloc, bloc} from './bloc'
+export {Consumer, useBloc} from './context/consumer'
+export {Provider, ProviderProps, withProvider} from './context/provider'
+export {suspense} from './suspense'

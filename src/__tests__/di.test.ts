@@ -1,5 +1,5 @@
+import {bloc, Bloc} from '../'
 import {injector} from '../di/injector'
-import {bloc, Bloc} from '../bloc'
 import {injectable} from '../di/injectable'
 
 it('should register to injector', function () {
@@ -8,6 +8,7 @@ it('should register to injector', function () {
   class A {
     test: string = 'aaa'
   }
+  
   // const x = injector.resolve('123')
   // const y = new x
   // expect(Reflect.has(y, 'test')).toBe(true)

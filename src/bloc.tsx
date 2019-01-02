@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-export type AbstractBloc<T extends Bloc> = { new (...args: any[]): T }
+export type ConstructorType<T> = { new (...args: any[]): T }
 
 export interface Bloc {
   // static context:React.Context<any> = null

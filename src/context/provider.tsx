@@ -1,19 +1,19 @@
 import * as React from 'react'
-import {AbstractBloc, Bloc, contextSymbol} from '../bloc'
-import {RefObject} from 'react'
+import {ConstructorType, Bloc, contextSymbol} from '../bloc'
+import {FC, RefObject, useContext, useEffect, useRef, useState} from 'react'
 
-export interface ProviderProps<T extends Bloc> {
-  of: AbstractBloc<T>
+export interface ProviderProps<T> {
+  of: ConstructorType<T>
   args?: any[]
   use?: T
   blocRef?: RefObject<T>
 }
 
-type ComponentProps<T> = ProviderProps<T> & {
+type Props<T> = ProviderProps<T> & {
   children: React.ReactNode
 }
 
-export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>, {}> {
+export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
   private _bloc: T = null
   private get bloc(): T {
     return this._bloc
@@ -31,7 +31,7 @@ export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>,
     }
   }
 
-  constructor(props: ComponentProps<T>) {
+  constructor(props: Props<T>) {
     super(props)
     if (props.use) {
       this.bloc = props.use
@@ -40,7 +40,7 @@ export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>,
     }
   }
 
-  createBloc(B: AbstractBloc<T>, args?: any[]) {
+  createBloc(B: ConstructorType<T>, args?: any[]) {
     if (args) {
       this.bloc = new B(...args)
     } else {
@@ -71,6 +71,58 @@ export class Provider<T extends Bloc> extends React.Component<ComponentProps<T>,
       </Context.Provider>
     )
   }
+}
+
+class BlocContainer<T> {
+  private _bloc: T = null
+  public get bloc(): T {
+    return this._bloc
+  }
+  public set bloc(newBloc: T) {
+    const oldBloc = this._bloc as Bloc
+    if (oldBloc && oldBloc !== newBloc) {
+      if (oldBloc.blocWillDestroy) {
+        oldBloc.blocWillDestroy()
+      }
+    }
+    this._bloc = newBloc
+  }
+  hasBloc() {
+    return this._bloc !== null
+  }
+}
+
+export const ProviderFC: FC<Props<any>> = function<T>(props: Props<T>) {
+  const containerRef = useRef(
+    new BlocContainer<T>()
+  )
+  const Context = Reflect.getMetadata(contextSymbol, props.of)
+  
+  function createBloc(Bloc: ConstructorType<T>, args?: any[]) {
+    const injects: any = []
+    for (let inject of injects) {
+      useContext(inject)
+    }
+    return new Bloc(...args)
+  }
+  
+  if (props.use) {
+    containerRef.current.bloc = props.use
+  } else {
+    if (!containerRef.current.hasBloc()) {
+      containerRef.current.bloc = createBloc(props.of, props.args)
+    }
+  }
+  
+  useEffect(() => {
+  
+  },)
+  
+  return (
+    <Context.Provider value={containerRef.current.bloc}>
+      {props.children}
+    </Context.Provider>
+  )
 }
 
 

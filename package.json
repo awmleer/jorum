@@ -29,11 +29,13 @@
     "@types/jest": "^23.3.10",
     "@types/react": "16.7.x",
     "@types/react-dom": "^16.0.8",
+    "@types/react-test-renderer": "^16.0.3",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.4.0",
     "jest": "^23.6.0",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
+    "react-test-renderer": "16.7.0-alpha.2",
     "rxjs": "6.3.x",
     "ts-jest": "^23.10.5",
     "typescript": "^3.1.1"
