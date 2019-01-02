@@ -1,12 +1,11 @@
 import * as React from 'react'
-import {ConstructorType, Bloc, contextSymbol, bloc} from '../bloc'
-import {FC, RefObject, useContext, useEffect, useRef, useState} from 'react'
+import {ConstructorType, Bloc, contextSymbol} from '../bloc'
+import {FC, useContext, useRef} from 'react'
 import {injectMetadataKey} from '../inject'
 
 export interface ProviderProps<T> {
   of: ConstructorType<T>
   args?: any[]
-  blocRef?: RefObject<T>
 }
 
 type Props<T> = ProviderProps<T> & {
