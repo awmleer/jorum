@@ -1,54 +1,9 @@
 import * as TestRenderer from 'react-test-renderer'
-import {FC} from 'react'
 import * as React from 'react'
-import {Bloc, bloc, inject, Provider, useBloc} from '..'
+import {Bloc, bloc, Provider} from '..'
+import {BarBloc, FaaBloc, FooBloc} from './blocs/foo.bloc'
+import {ShowBar, ShowFaa, ShowFoo} from './components/show-foo'
 
-
-@bloc
-class FooBloc {
-  foo: string = 'this is foo'
-}
-
-@bloc
-class FaaBloc {
-  constructor(
-    public faa: string = 'this is faa'
-  ) {}
-}
-
-@bloc
-class BarBloc {
-  constructor(
-    @inject public fooBloc: FooBloc
-  ) {}
-}
-
-const ShowFoo: FC = () => {
-  const fooBloc = useBloc(FooBloc)
-  return (
-    <div>
-      {fooBloc.foo}
-    </div>
-  )
-}
-
-const ShowFaa: FC = () => {
-  const faaBloc = useBloc(FaaBloc)
-  return (
-    <div>
-      {faaBloc.faa}
-    </div>
-  )
-}
-
-const ShowBar: FC = () => {
-  const barBloc = useBloc(BarBloc)
-  return (
-    <div>
-      {barBloc.fooBloc.foo}
-    </div>
-  )
-}
 
 
 it('provider initialize', function () {
