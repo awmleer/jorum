@@ -18,6 +18,18 @@ exports[`provider of prop change 2`] = `
 </div>
 `;
 
+exports[`provider with args 1`] = `
+<div>
+  this is faa one
+</div>
+`;
+
+exports[`provider with args 2`] = `
+<div>
+  this is faa two
+</div>
+`;
+
 exports[`provider with auto-injected dependencies 1`] = `
 <div>
   this is foo

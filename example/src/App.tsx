@@ -63,13 +63,9 @@ export class App extends React.Component<{}, State> {
         {this.state.switcher}
         <button onClick={this.changeText}>switch bloc</button>
         {this.state.switcher ? (
-          <Provider of={CounterBloc} use={counterBloc}>
+          <Provider of={CounterBloc}>
             <p>This one bloc:</p>
             <Counter/>
-            <Provider of={CounterBloc} use={counterBloc}>
-              <p>This the same bloc of the above one:</p>
-              <Counter/>
-            </Provider>
             <Provider of={CounterBloc}>
               <p>This is another bloc:</p>
               <Counter/>

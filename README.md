@@ -77,14 +77,6 @@ Pass args to BLoC constructor:
 </Provider>
 ```
 
-Use the given BLoC instance:
-
-```tsx
-<Provider of={CounterBloc} use={counterBloc}>
-  {/*...*/}
-</Provider>
-```
-
 Use the `withProvider` HOC:
 
 ```jsx

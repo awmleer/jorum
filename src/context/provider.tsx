@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {ConstructorType, Bloc, contextSymbol} from '../bloc'
-import {FC, useContext, useRef} from 'react'
+import {FC, useContext, useEffect, useRef} from 'react'
 import {injectMetadataKey} from '../inject'
 
 export interface ProviderProps<T> {
@@ -59,6 +59,12 @@ export const Provider: FC<Props<any>> = function<T>(props: Props<T>) {
   if (!containerRef.current.hasBloc()) {
     containerRef.current.bloc = createBloc(props.of, props.args)
   }
+  
+  useEffect(() => {
+    return () => {
+      containerRef.current.bloc = null
+    }
+  }, [])
   
   const Context = Reflect.getMetadata(contextSymbol, props.of)
   return (

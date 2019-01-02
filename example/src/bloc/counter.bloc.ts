@@ -1,4 +1,4 @@
-import {BehaviorSubject, Observable, Subject} from 'rxjs'
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs'
 import {distinctUntilChanged, map} from 'rxjs/operators'
 import {bloc, Bloc} from 'jorum'
 
@@ -39,7 +39,7 @@ export class CounterBloc implements Bloc {
 @bloc
 export class TestBloc implements Bloc {
   a$ = new BehaviorSubject(1)
-  b$ = new Subject()
+  b$ = new ReplaySubject(1)
   // a$ = new Observable()
   constructor(inital?: number) {
     if (inital) {

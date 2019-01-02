@@ -1,7 +1,7 @@
 import * as TestRenderer from 'react-test-renderer'
 import {FC} from 'react'
 import * as React from 'react'
-import {bloc, inject, Provider, useBloc} from '..'
+import {Bloc, bloc, inject, Provider, useBloc} from '..'
 
 
 @bloc
@@ -11,7 +11,9 @@ class FooBloc {
 
 @bloc
 class FaaBloc {
-  faa: string = 'this is faa'
+  constructor(
+    public faa: string = 'this is faa'
+  ) {}
 }
 
 @bloc
@@ -100,6 +102,39 @@ it('provider of prop change', function () {
 })
 
 
+it('provider with args', function() {
+  interface State {
+    args: any[]
+  }
+  class Container extends React.Component<{}, State> {
+    state = {
+      args: ['this is faa one']
+    }
+    
+    change() {
+      this.setState({
+        args: ['this is faa two']
+      })
+    }
+    
+    render() {
+      return (
+        <Provider of={FaaBloc} args={this.state.args} key={this.state.args[0]}>
+          <ShowFaa />
+        </Provider>
+      )
+    }
+  }
+  
+  const renderer = TestRenderer.create(
+    <Container/>
+  )
+  expect(renderer.toJSON()).toMatchSnapshot()
+  renderer.root.instance.change()
+  expect(renderer.toJSON()).toMatchSnapshot()
+})
+
+
 it('provider with auto-injected dependencies', function () {
   const renderer = TestRenderer.create(
     <Provider of={FooBloc}>
@@ -109,4 +144,25 @@ it('provider with auto-injected dependencies', function () {
     </Provider>
   )
   expect(renderer.toJSON()).toMatchSnapshot()
+})
+
+
+it('blocWillDestroy is called', function () {
+  const mockBlocWillDestroy = jest.fn(() => null)
+  
+  @bloc
+  class TestDestroyBloc implements Bloc {
+    blocWillDestroy = mockBlocWillDestroy
+  }
+  
+  expect(mockBlocWillDestroy.mock.calls.length).toBe(0)
+  const renderer = TestRenderer.create(
+    <Provider of={TestDestroyBloc}>
+      <div>123</div>
+    </Provider>
+  )
+  renderer.unmount()
+  
+  expect(mockBlocWillDestroy.mock.calls.length).toBe(1)
+  
 })
