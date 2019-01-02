@@ -31,12 +31,35 @@ it('provider initialize', function () {
 })
 
 it('provider with use', function () {
+  class Container extends React.Component<{}, any> {
+    state = {
+      bloc: new TestBloc()
+    }
+    
+    changeUse() {
+      const anotherTestBloc = new TestBloc()
+      anotherTestBloc.test = 'bbb'
+      this.setState({
+        bloc: anotherTestBloc
+      })
+    }
+    
+    render() {
+      return (
+        <ProviderFC of={TestBloc} use={this.state.bloc}>
+          <TestData />
+        </ProviderFC>
+      )
+    }
+  }
+  
   const testBloc = new TestBloc()
   testBloc.test = 'bbb'
   const renderer = TestRenderer.create(
-    <ProviderFC of={TestBloc} use={testBloc}>
-      <TestData />
-    </ProviderFC>
+    <Container/>
   )
   expect(renderer.toJSON()).toMatchSnapshot()
+  renderer.root.instance.changeUse()
+  expect(renderer.toJSON()).toMatchSnapshot()
 });
+

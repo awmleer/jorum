@@ -22,7 +22,7 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "react": "16.x",
+    "react": "16.7.0-alpha.2",
     "rxjs": "6.x"
   },
   "devDependencies": {

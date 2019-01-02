@@ -73,28 +73,29 @@ export class Provider<T extends Bloc> extends React.Component<Props<T>, {}> {
   }
 }
 
-class BlocContainer<T> {
-  private _bloc: T = null
-  public get bloc(): T {
+class BlocContainer {
+  private _bloc: Bloc = undefined
+  public get bloc() {
     return this._bloc
   }
-  public set bloc(newBloc: T) {
-    const oldBloc = this._bloc as Bloc
-    if (oldBloc && oldBloc !== newBloc) {
-      if (oldBloc.blocWillDestroy) {
-        oldBloc.blocWillDestroy()
-      }
+  public set bloc(newBloc: any) {
+    if (newBloc === undefined) return
+    const oldBloc = this._bloc
+    if (newBloc === oldBloc) return
+    if (typeof oldBloc === 'object' && oldBloc.blocWillDestroy) {
+      oldBloc.blocWillDestroy()
     }
     this._bloc = newBloc
   }
+  
   hasBloc() {
-    return this._bloc !== null
+    return this._bloc !== undefined
   }
 }
 
 export const ProviderFC: FC<Props<any>> = function<T>(props: Props<T>) {
   const containerRef = useRef(
-    new BlocContainer<T>()
+    new BlocContainer()
   )
   const Context = Reflect.getMetadata(contextSymbol, props.of)
   
@@ -116,7 +117,7 @@ export const ProviderFC: FC<Props<any>> = function<T>(props: Props<T>) {
   
   useEffect(() => {
   
-  },)
+  },[])
   
   return (
     <Context.Provider value={containerRef.current.bloc}>
