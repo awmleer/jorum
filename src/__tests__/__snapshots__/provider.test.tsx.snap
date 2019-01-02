@@ -2,13 +2,19 @@
 
 exports[`provider initialize 1`] = `
 <div>
-  aaa
+  this is foo
+</div>
+`;
+
+exports[`provider with auto-injected dependencies 1`] = `
+<div>
+  this is foo
 </div>
 `;
 
 exports[`provider with use 1`] = `
 <div>
-  aaa
+  this is foo
 </div>
 `;
 

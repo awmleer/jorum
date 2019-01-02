@@ -1,65 +1,94 @@
 import * as TestRenderer from 'react-test-renderer'
 import {ProviderFC} from '../context/provider'
 import {FC} from 'react'
-import {injectable} from '../di/injectable'
 import {bloc} from '../bloc'
 import * as React from 'react'
 import {useBloc} from '..'
+import {inject} from '../di/inject'
 
-@injectable
+
 @bloc
-class TestBloc {
-  test: string = 'aaa'
+class FooBloc {
+  foo: string = 'this is foo'
 }
 
-const TestData: FC = () => {
-  const testBloc = useBloc(TestBloc)
+@bloc
+class BarBloc {
+  constructor(
+    @inject public fooBloc: FooBloc
+  ) {}
+}
+
+const ShowFoo: FC = () => {
+  const fooBloc = useBloc(FooBloc)
   return (
     <div>
-      {testBloc.test}
+      {fooBloc.foo}
     </div>
   )
 }
 
+const ShowBar: FC = () => {
+  const barBloc = useBloc(BarBloc)
+  return (
+    <div>
+      {barBloc.fooBloc.foo}
+    </div>
+  )
+}
+
+
 it('provider initialize', function () {
   const renderer = TestRenderer.create(
-    <ProviderFC of={TestBloc}>
-      <TestData />
+    <ProviderFC of={FooBloc}>
+      <ShowFoo />
     </ProviderFC>
   )
   expect(renderer.toJSON()).toMatchSnapshot()
 })
 
+
 it('provider with use', function () {
   class Container extends React.Component<{}, any> {
     state = {
-      bloc: new TestBloc()
+      bloc: new FooBloc()
     }
     
     changeUse() {
-      const anotherTestBloc = new TestBloc()
-      anotherTestBloc.test = 'bbb'
+      const anotherFooBloc = new FooBloc()
+      anotherFooBloc.foo = 'bbb'
       this.setState({
-        bloc: anotherTestBloc
+        bloc: anotherFooBloc
       })
     }
     
     render() {
       return (
-        <ProviderFC of={TestBloc} use={this.state.bloc}>
-          <TestData />
+        <ProviderFC of={FooBloc} use={this.state.bloc}>
+          <ShowFoo />
         </ProviderFC>
       )
     }
   }
   
-  const testBloc = new TestBloc()
-  testBloc.test = 'bbb'
+  const testBloc = new FooBloc()
+  testBloc.foo = 'bbb'
   const renderer = TestRenderer.create(
     <Container/>
   )
   expect(renderer.toJSON()).toMatchSnapshot()
   renderer.root.instance.changeUse()
   expect(renderer.toJSON()).toMatchSnapshot()
-});
+})
 
+
+it('provider with auto-injected dependencies', function () {
+  const renderer = TestRenderer.create(
+    <ProviderFC of={FooBloc}>
+      <ProviderFC of={BarBloc}>
+        <ShowBar />
+      </ProviderFC>
+    </ProviderFC>
+  )
+  expect(renderer.toJSON()).toMatchSnapshot()
+})

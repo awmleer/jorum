@@ -1,6 +1,7 @@
 import * as React from 'react'
-import {ConstructorType, Bloc, contextSymbol} from '../bloc'
+import {ConstructorType, Bloc, contextSymbol, bloc} from '../bloc'
 import {FC, RefObject, useContext, useEffect, useRef, useState} from 'react'
+import {injectMetadataKey} from '../di/inject'
 
 export interface ProviderProps<T> {
   of: ConstructorType<T>
@@ -100,9 +101,11 @@ export const ProviderFC: FC<Props<any>> = function<T>(props: Props<T>) {
   const Context = Reflect.getMetadata(contextSymbol, props.of)
   
   function createBloc(Bloc: ConstructorType<T>, args?: any[]) {
-    const injects: any = []
+    const injects = Reflect.getMetadata(injectMetadataKey, Bloc) || []
+    const paramTypes = Reflect.getMetadata('design:paramtypes', Bloc) || []
     for (let inject of injects) {
-      useContext(inject)
+      const Context = Reflect.getMetadata(contextSymbol, paramTypes[inject])
+      args[inject] = useContext(Context)
     }
     return new Bloc(...args)
   }
@@ -115,15 +118,15 @@ export const ProviderFC: FC<Props<any>> = function<T>(props: Props<T>) {
     }
   }
   
-  useEffect(() => {
-  
-  },[])
-  
   return (
     <Context.Provider value={containerRef.current.bloc}>
       {props.children}
     </Context.Provider>
   )
+}
+
+ProviderFC.defaultProps = {
+  args: []
 }
 
 
