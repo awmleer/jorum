@@ -35,3 +35,9 @@ exports[`provider with auto-injected dependencies 1`] = `
   this is foo
 </div>
 `;
+
+exports[`withProvider HOC 1`] = `
+<div>
+  this is foo
+</div>
+`;

@@ -1,6 +1,6 @@
 import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
-import {Bloc, bloc, Provider} from '..'
+import {Bloc, bloc, Provider, useBloc, withProvider} from '..'
 import {BarBloc, FaaBloc, FooBloc} from './blocs/foo.bloc'
 import {ShowBar, ShowFaa, ShowFoo} from './components/show-foo'
 
@@ -119,5 +119,21 @@ it('blocWillDestroy is called', function () {
   renderer.unmount()
   
   expect(mockBlocWillDestroy.mock.calls.length).toBe(1)
-  
+})
+
+it('withProvider HOC', function() {
+  const Container = withProvider({
+    of: FooBloc
+  })(() => {
+    const bloc = useBloc(FooBloc)
+    return (
+      <div>
+        {bloc.foo}
+      </div>
+    )
+  })
+  const renderer = TestRenderer.create(
+    <Container />
+  )
+  expect(renderer.toJSON()).toMatchSnapshot()
 })
