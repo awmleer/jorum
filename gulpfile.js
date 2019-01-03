@@ -8,6 +8,6 @@ gulp.task('clean-lib', function () {
 
 gulp.task('prebuild', ['clean-lib'], function() {
   return gulp
-    .src(['package.json', 'README.md', 'LICENSE'])
+    .src(['package.json', 'docs/README.md', 'LICENSE'])
     .pipe(gulp.dest('lib/'))
 })

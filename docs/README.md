@@ -4,163 +4,52 @@
 [![codecov](https://codecov.io/gh/awmleer/jorum/branch/master/graph/badge.svg)](https://codecov.io/gh/awmleer/jorum)
 [![npm](https://img.shields.io/npm/v/jorum.svg)](https://www.npmjs.com/package/jorum)
 [![npm](https://img.shields.io/npm/dw/jorum.svg)](https://www.npmjs.com/package/jorum)
-[![GitHub repo size in bytes](https://img.shields.io/github/repo-size/awmleer/jorum.svg)](https://github.com/awmleer/jorum)
 [![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/jorum.svg)](https://www.npmjs.com/package/jorum)
 [![Build Status](https://travis-ci.org/awmleer/jorum.svg?branch=master)](https://travis-ci.org/awmleer/jorum)
 
-Model layer with rx.js for React applications.
+基于Rx.js的React应用数据层框架。
 
-## Feature
+📚 [文档](https://jorum.gitbook.io/jorum/)
 
-- Lightweight.
-- Strongly typed.
-- No magic, just straightforward streams.
+🚀 [快速上手](https://jorum.gitbook.io/jorum/quick-start/)
 
-## Installation
+📂 [GitHub仓库](https://github.com/awmleer/jorum)
+
+📬 [提交issue](https://github.com/awmleer/jorum/issues/new)
+
+> jorum现在还是处于v0版本的阶段，API可能会有比较大的变动。
+>
+> 我们预计在React v16.8发布后发布jorum的第一个正式版本，因为jorum的设计大量依赖了新版的React Hooks API。
+
+## 特性
+
+🔩 轻量：简单易用，低侵入性
+
+🔎 清晰：基于Rx.js的响应式数据流
+
+⛓ 强类型：使用TypeScript编写
+
+💉 依赖注入：基于修饰器的依赖注入使代码更易于维护
+
+🎣 Hooks支持：为新版React的Hooks而生，但同时也兼容传统语法
+
+## 安装
+
+> ⚠️ 由于`jorum`中数据流的组织是基于Rx.js的，所以需要**同时安装**`rxjs`。
 
 ```bash
-yarn add rxjs jorum
+$ yarn add rxjs jorum
 # or
-npm install rxjs jorum --save
+$ npm install rxjs jorum --save
 ```
 
-## Guide
+## 教程&文档
 
-### Define a BLoC
+快速上手请点击[这里](https://jorum.gitbook.io/jorum/quick-start/)。
 
-BLoC stands for "Business Logic Component".
+完整文档请点击[这里](https://jorum.gitbook.io/jorum/)。
 
-It is basically a plain class except it has a `blocWillDestroy()` method. You can use this method to do some cleanup work when bloc is going to be destroyed.
+## 样例
 
-```javascript
-export class CounterBloc extends Bloc {
-  interval = null
-  constructor() {
-    super()
-    this.interval = setInterval(() => {
-      this.count$.next(this.count$.value + 1)
-      this.countAnother$.next(this.countAnother$.value + 2)
-    }, 1000)
-  }
-
-  count$ = new BehaviorSubject(0)
-
-  countAnother$ = new BehaviorSubject(10)
-
-  shouldShowResetButton$ = this.count$
-    .pipe(map(val => val > 10))
-    .pipe(distinctUntilChanged())
-
-  resetCounter = () => {
-    this.count$.next(0)
-  }
-  
-  blocWillDestroy(){
-    clearInterval(this.interval)
-  }
-}
-```
-
-### Provider
-
-Basic usage:
-
-```tsx
-<Provider of={CounterBloc}>
-  {/*...*/}
-</Provider>
-```
-
-Pass args to BLoC constructor:
-
-```tsx
-<Provider of={CounterBloc} args={[13]}>
-  {/*...*/}
-</Provider>
-```
-
-Use the `withProvider` HOC:
-
-```jsx
-const Counter = withProvider({
-  of: CounterBloc,
-  args: [13]
-})(() => {
-  return (
-    /*...*/
-  )
-})
-```
-
-### Consumer
-
-Use `Consumer` component with render props pattern:
-
-```tsx
-<Consumer of={CounterBloc}>
-  {(counterBloc) => (
-    /*...*/
-  )}
-</Consumer>
-```
-
-Or use custom hook:
-
-```js
-const counterBloc = useBloc(CounterBloc)
-```
-
-### Subscribe
-
-Subscribe to a single observable:
-
-```tsx
-<Subscribe to={counterBloc.shouldShowResetButton$}>
-  {shouldShowResetButton => (
-    shouldShowResetButton && <button onClick={counterBloc.resetCounter}>reset</button>
-  )}
-</Subscribe>
-```
-
-Subscribe to multiple observables:
-
-```tsx
-<Subscribe to={[counterBloc.count$, counterBloc.countAnother$]}>
-  {(count, countAnother) => (
-    <div>
-      <p>{count}</p>
-      <p>{countAnother}</p>
-    </div>
-  )}
-</Subscribe>
-```
-
-Or use custom hook:
-
-```js
-const count = useStream(counterBloc.count$)
-```
-
-## Example
-
-Full example is available [here](https://github.com/awmleer/jorum/tree/master/example).
-
-## Development
-
-### Build
-
-```bash
-yarn install
-yarn build
-```
-
-### Run example app
-
-```bash
-yarn install
-yarn build
-cd example
-yarn install
-yarn start
-```
+较为完整的样例可以点击[这里](https://github.com/awmleer/jorum/tree/master/example)查看。
 
