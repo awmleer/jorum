@@ -2,7 +2,7 @@
 
 ## 安装
 
-首先，请确保jorum和RxJS已经被正确的安装，并且相关的环境配置已经完成。这部分的操作在[首页](https://jorum.gitbook.io/jorum/index#an-zhuang)有所介绍。
+首先，请确保jorum和RxJS已经被正确的安装，并且相关的环境配置已经完成。这部分的操作在[首页](https://jorum.gitbook.io/jorum/#an-zhuang)有所介绍。
 
 ## 定义BLoC
 
