@@ -1,10 +1,12 @@
 #  Jorum
 
 [![GitHub](https://img.shields.io/github/license/awmleer/jorum.svg)](https://github.com/awmleer/jorum)
+[![codecov](https://codecov.io/gh/awmleer/jorum/branch/master/graph/badge.svg)](https://codecov.io/gh/awmleer/jorum)
 [![npm](https://img.shields.io/npm/v/jorum.svg)](https://www.npmjs.com/package/jorum)
 [![npm](https://img.shields.io/npm/dw/jorum.svg)](https://www.npmjs.com/package/jorum)
 [![GitHub repo size in bytes](https://img.shields.io/github/repo-size/awmleer/jorum.svg)](https://github.com/awmleer/jorum)
 [![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/jorum.svg)](https://www.npmjs.com/package/jorum)
+[![Build Status](https://travis-ci.org/awmleer/jorum.svg?branch=master)](https://travis-ci.org/awmleer/jorum)
 
 Model layer with rx.js for React applications.
 
