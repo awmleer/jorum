@@ -6,19 +6,49 @@ exports[`subscribe component 1`] = `
 </div>
 `;
 
-exports[`useStream HOC with suspense and no initialValue 1`] = `
+exports[`subscribe component with changed stream 1`] = `
 <div>
   this is data
 </div>
 `;
 
-exports[`useStream HOC without suspense and with initialValue 1`] = `
+exports[`subscribe component with changed stream 2`] = `
+<div>
+  this is another data
+</div>
+`;
+
+exports[`useObservable hook with suspense and no initialValue 1`] = `
+<div>
+  this is data
+</div>
+`;
+
+exports[`useStream hook with changed stream 1`] = `
+<div>
+  this is data
+</div>
+`;
+
+exports[`useStream hook with changed stream 2`] = `
+<div>
+  this is another data
+</div>
+`;
+
+exports[`useStream hook with suspense and no initialValue 1`] = `
+<div>
+  this is data
+</div>
+`;
+
+exports[`useStream hook without suspense and with initialValue 1`] = `
 <div>
   this is initial value
 </div>
 `;
 
-exports[`useStream HOC without suspense and with initialValue 2`] = `
+exports[`useStream hook without suspense and with initialValue 2`] = `
 <div>
   this is data
 </div>

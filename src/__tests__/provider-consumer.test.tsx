@@ -138,6 +138,7 @@ it('withProvider HOC', function() {
   expect(renderer.toJSON()).toMatchSnapshot()
 })
 
+
 it('withProvider HOC with args param', function() {
   const Container = withProvider({
     of: FaaBloc,
@@ -149,6 +150,24 @@ it('withProvider HOC with args param', function() {
   })
   const renderer = TestRenderer.create(
     <Container />
+  )
+  expect(renderer.toJSON()).toMatchSnapshot()
+})
+
+
+it('withProvider with function as param', function() {
+  const App = withProvider<{
+    text: string
+  }>((props) => ({
+    of: FaaBloc,
+    args: [props.text]
+  }))(() => {
+    return (
+      <ShowFaa />
+    )
+  })
+  const renderer = TestRenderer.create(
+    <App text="this is from text prop" />
   )
   expect(renderer.toJSON()).toMatchSnapshot()
 })

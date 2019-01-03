@@ -47,3 +47,9 @@ exports[`withProvider HOC with args param 1`] = `
   this is another faa
 </div>
 `;
+
+exports[`withProvider with function as param 1`] = `
+<div>
+  this is from text prop
+</div>
+`;
