@@ -1,1 +1,1 @@
-./docs/readme.md
+./docs/index.md
