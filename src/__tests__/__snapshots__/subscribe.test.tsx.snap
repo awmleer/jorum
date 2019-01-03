@@ -2,6 +2,24 @@
 
 exports[`subscribe component 1`] = `
 <div>
+  this is data
+</div>
+`;
+
+exports[`useStream HOC with suspense and no initialValue 1`] = `
+<div>
+  this is data
+</div>
+`;
+
+exports[`useStream HOC without suspense and with initialValue 1`] = `
+<div>
   this is initial value
+</div>
+`;
+
+exports[`useStream HOC without suspense and with initialValue 2`] = `
+<div>
+  this is data
 </div>
 `;

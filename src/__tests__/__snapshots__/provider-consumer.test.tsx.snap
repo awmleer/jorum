@@ -41,3 +41,9 @@ exports[`withProvider HOC 1`] = `
   this is foo
 </div>
 `;
+
+exports[`withProvider HOC with args param 1`] = `
+<div>
+  this is another faa
+</div>
+`;

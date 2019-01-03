@@ -137,3 +137,19 @@ it('withProvider HOC', function() {
   )
   expect(renderer.toJSON()).toMatchSnapshot()
 })
+
+it('withProvider HOC with args param', function() {
+  const Container = withProvider({
+    of: FaaBloc,
+    args: ['this is another faa']
+  })(() => {
+    return (
+      <ShowFaa />
+    )
+  })
+  const renderer = TestRenderer.create(
+    <Container />
+  )
+  expect(renderer.toJSON()).toMatchSnapshot()
+})
+
