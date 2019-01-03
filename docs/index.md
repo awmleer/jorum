@@ -7,7 +7,7 @@
 [![npm bundle size (minified)](https://img.shields.io/bundlephobia/min/jorum.svg)](https://www.npmjs.com/package/jorum)
 [![Build Status](https://travis-ci.org/awmleer/jorum.svg?branch=master)](https://travis-ci.org/awmleer/jorum)
 
-基于Rx.js的React应用数据层框架。
+基于RxJS的React应用数据层框架。
 
 📚 [文档](https://jorum.gitbook.io/jorum/)
 
@@ -25,7 +25,7 @@
 
 🔩 轻量：简单易用，低侵入性
 
-🔎 清晰：基于Rx.js的响应式数据流
+🔎 清晰：基于RxJS的响应式数据流
 
 ⛓ 强类型：使用TypeScript编写
 
@@ -35,7 +35,7 @@
 
 ## 安装
 
-> ⚠️ 由于`jorum`中数据流的组织是基于Rx.js的，所以需要**同时安装**`rxjs`。
+> ⚠️ 由于`jorum`中数据流的组织是基于RxJS的，所以需要**同时安装**`rxjs`。
 
 ```bash
 $ yarn add rxjs jorum

@@ -1,118 +1,104 @@
-# Guide
+# 快速上手
 
-### Define a BLoC
+## 安装
 
-BLoC stands for "Business Logic Component".
+首先，请确保jorum和RxJS已经被正确的安装，并且相关的环境配置已经完成。这部分的操作在[首页](https://jorum.gitbook.io/jorum/index#an-zhuang)有所介绍。
 
-It is basically a plain class except it has a `blocWillDestroy()` method. You can use this method to do some cleanup work when bloc is going to be destroyed.
+## 定义BLoC
 
-```javascript
-export class CounterBloc extends Bloc {
-  interval = null
-  constructor() {
-    super()
-    this.interval = setInterval(() => {
-      this.count$.next(this.count$.value + 1)
-      this.countAnother$.next(this.countAnother$.value + 2)
-    }, 1000)
-  }
+BLoC（Business Logic Component）可以理解为业务逻辑单元，是存放一组数据及其操作的容器。
 
-  count$ = new BehaviorSubject(0)
+听起来很高深？
 
-  countAnother$ = new BehaviorSubject(10)
+其实并不，BLoC其实只是一个普通的类，只是我们需要用`@bloc`修饰器来修饰它，这样jorum才能够将其识别。
 
-  shouldShowResetButton$ = this.count$
-    .pipe(map(val => val > 10))
-    .pipe(distinctUntilChanged())
+```typescript
+import {bloc} from 'jorum'
 
-  resetCounter = () => {
-    this.count$.next(0)
-  }
+@bloc
+export class FooBloc {
   
-  blocWillDestroy(){
-    clearInterval(this.interval)
+}
+```
+
+## 往BLoC中添加数据
+
+在定义好BLoC后，我们可以在其中添加数据：
+
+```typescript
+@bloc
+export class FooBloc {
+  data$ = new BehaviorSubject(1)
+  
+  constructor() {
+    setTimeOut(() => {
+      this.data$.next(2)
+    }, 5000)
   }
 }
 ```
 
-### Provider
+> 这里的“数据”都是[RxJS](https://rxjs-dev.firebaseapp.com/)中的Observable，在这篇文档中，我们假设你已经对RxJS有所了解。
 
-Basic usage:
+## 在组件中提供BLoC
+
+现在，我们可以使用`Provider`组件将`FooBloc`加入到React的组件树中：
 
 ```tsx
-<Provider of={CounterBloc}>
+<Provider of={FooBloc}>
   {/*...*/}
 </Provider>
 ```
 
-Pass args to BLoC constructor:
+`Provider`会自动创建和销毁一个`FooBloc`的实例，并且，只有`Provider`节点下面的子节点可以获取到这个`FooBloc`的实例。
+
+> jorum中的Provider组件是基于React的[Context API](https://reactjs.org/docs/context.html)的。
+
+## 获取这个BLoC的实例
+
+在子组件中，使用`useBloc`hook可以获取到外层提供的`FooBloc`的实例：
 
 ```tsx
-<Provider of={CounterBloc} args={[13]}>
-  {/*...*/}
-</Provider>
-```
-
-Use the `withProvider` HOC:
-
-```jsx
-const Counter = withProvider({
-  of: CounterBloc,
-  args: [13]
-})(() => {
+export const ShowFoo: FC = () => {
+  const fooBloc = useBloc(FooBloc)
   return (
-    /*...*/
-  )
-})
-```
-
-### Consumer
-
-Use `Consumer` component with render props pattern:
-
-```tsx
-<Consumer of={CounterBloc}>
-  {(counterBloc) => (
-    /*...*/
-  )}
-</Consumer>
-```
-
-Or use custom hook:
-
-```js
-const counterBloc = useBloc(CounterBloc)
-```
-
-### Subscribe
-
-Subscribe to a single observable:
-
-```tsx
-<Subscribe to={counterBloc.shouldShowResetButton$}>
-  {shouldShowResetButton => (
-    shouldShowResetButton && <button onClick={counterBloc.resetCounter}>reset</button>
-  )}
-</Subscribe>
-```
-
-Subscribe to multiple observables:
-
-```tsx
-<Subscribe to={[counterBloc.count$, counterBloc.countAnother$]}>
-  {(count, countAnother) => (
     <div>
-      <p>{count}</p>
-      <p>{countAnother}</p>
+      {fooBloc ? 'foo' : ''}
     </div>
-  )}
-</Subscribe>
+  )
+}
 ```
 
-Or use custom hook:
+> 看起来不像是一个正常的React组件？这是React的新特性：[Hooks](https://reactjs.org/docs/hooks-intro.html)
 
-```js
-const count = useStream(counterBloc.count$)
+## 订阅BLoC中的数据
+
+BLoC中的数据是Observable，我们并不能像下面这样直接渲染到页面上：
+
+```tsx
+return (
+  <div>
+    {fooBloc.data$}
+    {/*↑这样写并不能拿到data的值*/}
+  </div>
+)
 ```
 
-## 
+因此，我们需要使用jorum提供的另一个hook：`useStream`
+
+```tsx
+export const ShowFoo: FC = () => {
+  const fooBloc = useBloc(FooBloc)
+  const data = useStream(fooBloc.data$)
+  return (
+    <div>
+      {data}
+    </div>
+  )
+}
+```
+
+当`fooBloc.data$`更新时，`ShowFoo`会被通知并重新渲染。
+
+> 不同于典型的响应式框架，在jorum中，我们对数据的订阅是**显式**的。
+

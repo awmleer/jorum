@@ -1,5 +1,5 @@
 root: ./docs/
 
 structure:
-  readme: readme.md
+  readme: index.md
 
