@@ -47,3 +47,9 @@ exports[`useStream hook without suspense and with initialValue 2`] = `
   this is data
 </div>
 `;
+
+exports[`useSubscription 1`] = `
+<div>
+  yes
+</div>
+`;

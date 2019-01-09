@@ -2,6 +2,7 @@ import * as React from 'react'
 import {Component, ReactNode, useRef} from 'react'
 import {Observable, Subscribable, Subscription} from 'rxjs'
 import {StreamNotInitialized} from './suspense'
+import {PartialObserver} from 'rxjs/src/internal/types'
 
 interface PropsMulti {
   to: Observable<any>[]
@@ -112,4 +113,14 @@ export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
   return state
 }
 
-
+export function useSubscription<T>(stream: Subscribable<T>, observer?: PartialObserver<T>): void
+export function useSubscription<T>(stream: Subscribable<T>, next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): void
+export function useSubscription<T>(stream: Subscribable<T>, ...subscribeArgs: any[]): void {
+  React.useEffect(() => {
+    if (stream) {
+      const subscription = stream.subscribe(...subscribeArgs)
+      return subscription.unsubscribe.bind(subscription)
+    }
+  },[stream])
+  
+}

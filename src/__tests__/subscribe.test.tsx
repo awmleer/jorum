@@ -1,9 +1,10 @@
 import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
 import {bloc, Consumer, Provider, Subscribe, suspense, useBloc, useStream} from '..'
-import {BehaviorSubject, Observable} from 'rxjs'
+import {BehaviorSubject, Observable, Subject} from 'rxjs'
 import {sleep} from './utils'
 import {FC, useEffect, useState} from 'react'
+import {useSubscription} from '../subscribe'
 
 
 @bloc
@@ -147,6 +148,31 @@ it('useStream hook with changed stream', async function () {
   expect(renderer.toJSON()).toMatchSnapshot()
   
   await sleep(400)
+  expect(renderer.toJSON()).toMatchSnapshot()
+  renderer.unmount()
+})
+
+
+it('useSubscription', async function() {
+  const foo$ = new Subject()
+  const App = suspense(() => {
+    const [changed, setChanged] = useState(false)
+    useSubscription(foo$, () => {
+      setChanged(true)
+    })
+    return (
+      <div>
+        {changed ? 'yes' : 'no'}
+      </div>
+    )
+  })
+  
+  const renderer = TestRenderer.create(
+    <App />
+  )
+  await sleep(100)
+  foo$.next(1)
+  await sleep(100)
   expect(renderer.toJSON()).toMatchSnapshot()
   renderer.unmount()
 })

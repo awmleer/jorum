@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-export {Subscribe, useStream} from './subscribe'
+export {Subscribe, useStream, useSubscription} from './subscribe'
 export {Bloc, bloc} from './bloc'
 export {Consumer, useBloc} from './context/consumer'
 export {Provider, ProviderProps, withProvider} from './context/provider'
