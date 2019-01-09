@@ -1,8 +1,7 @@
 import * as React from 'react'
 import {Component, ReactNode, useRef} from 'react'
-import {Observable, Subscribable, Subscription} from 'rxjs'
+import {Observable, PartialObserver, Subscribable, Subscription} from 'rxjs'
 import {StreamNotInitialized} from './suspense'
-import {PartialObserver} from 'rxjs/src/internal/types'
 
 interface PropsMulti {
   to: Observable<any>[]
