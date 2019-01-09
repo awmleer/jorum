@@ -18,12 +18,6 @@ exports[`subscribe component with changed stream 2`] = `
 </div>
 `;
 
-exports[`useObservable hook with suspense and no initialValue 1`] = `
-<div>
-  this is data
-</div>
-`;
-
 exports[`useStream hook with changed stream 1`] = `
 <div>
   this is data

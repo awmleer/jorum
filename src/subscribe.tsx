@@ -112,7 +112,4 @@ export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
   return state
 }
 
-export function useObservable<T>(observable: Observable<T>): T {
-  // console.warn('useObservable hook is deprecated and will be removed in the next major version. Please use useStream instead.')
-  return useStream(observable)
-}
+

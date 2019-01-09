@@ -1,6 +1,6 @@
 import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
-import {bloc, Consumer, Provider, Subscribe, suspense, useBloc, useObservable, useStream} from '..'
+import {bloc, Consumer, Provider, Subscribe, suspense, useBloc, useStream} from '..'
 import {BehaviorSubject, Observable} from 'rxjs'
 import {sleep} from './utils'
 import {FC, useEffect, useState} from 'react'
@@ -62,29 +62,6 @@ it('subscribe component with changed stream', async function () {
   expect(renderer.toJSON()).toMatchSnapshot()
   
   await sleep(400)
-  expect(renderer.toJSON()).toMatchSnapshot()
-  renderer.unmount()
-})
-
-
-it('useObservable hook with suspense and no initialValue', async function () {
-  const App = suspense(() => {
-    const bloc = useBloc(BehaviorSubjectBloc)
-    const data = useObservable(bloc.data$)
-    return (
-      <div>
-        {data}
-      </div>
-    )
-  })
-  
-  const renderer = TestRenderer.create(
-    <Provider of={BehaviorSubjectBloc}>
-      <App />
-    </Provider>
-  )
-  
-  await sleep(200)
   expect(renderer.toJSON()).toMatchSnapshot()
   renderer.unmount()
 })
