@@ -2,6 +2,8 @@ import * as React from 'react'
 import {ConstructorType, Bloc, contextSymbol} from '../bloc'
 import {FC, useContext, useEffect, useRef} from 'react'
 import {injectMetadataKey} from '../inject'
+import {Unsubscribable} from 'rxjs'
+import {Effect, effectsMetadataKey} from '../effect'
 
 export interface ProviderProps<T> {
   of: ConstructorType<T>
@@ -13,23 +15,42 @@ type Props<T> = ProviderProps<T> & {
 }
 
 class BlocContainer {
+  public blocType: ConstructorType<Bloc> = null
+  
   private _bloc: Bloc = undefined
   public get bloc() {
     return this._bloc
   }
   public set bloc(newBloc: any) {
     if (newBloc === undefined) return
-    const oldBloc = this._bloc
-    if (newBloc === oldBloc) return
-    if (typeof oldBloc === 'object' && oldBloc.blocWillDestroy) {
-      oldBloc.blocWillDestroy()
-    }
+    if (newBloc === this._bloc) return
+    this.cleanUp()
     this._bloc = newBloc
+    this.initialize()
   }
   
-  constructor(
-    public blocType: ConstructorType<Bloc>
-  ) {}
+  private effectSubscriptions: Unsubscribable[] = []
+  
+  initialize() {
+    const effects: Effect[] = Reflect.getMetadata(effectsMetadataKey, this.blocType) || []
+    for (const effect of effects) {
+      const subscription = effect.stream$.subscribe(
+        (this._bloc as {[key: string]: (value?: string) => void})[effect.propertyKey].bind(this._bloc)
+      )
+      this.effectSubscriptions.push(subscription)
+    }
+  }
+  
+  cleanUp() {
+    if (typeof this._bloc !== 'object') return
+    for (const subscription of this.effectSubscriptions) {
+      subscription.unsubscribe()
+    }
+    this.effectSubscriptions = []
+    if (this._bloc.blocWillDestroy) {
+      this._bloc.blocWillDestroy()
+    }
+  }
   
   hasBloc() {
     return this._bloc !== undefined
@@ -47,9 +68,7 @@ export const Provider: FC<Props<any>> = function<T>(props: Props<T>) {
     return new Bloc(...args)
   }
   
-  const containerRef = useRef(
-    new BlocContainer(props.of)
-  )
+  const containerRef = useRef(new BlocContainer())
   
   if (containerRef.current.blocType !== props.of) {
     containerRef.current.blocType = props.of
