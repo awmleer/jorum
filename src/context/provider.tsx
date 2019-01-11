@@ -2,8 +2,8 @@ import * as React from 'react'
 import {ConstructorType, Bloc, contextSymbol} from '../bloc'
 import {FC, useContext, useEffect, useRef} from 'react'
 import {injectMetadataKey} from '../inject'
-import {Unsubscribable} from 'rxjs'
-import {Effect, effectsMetadataKey} from '../effect'
+import {Subscribable, Unsubscribable} from 'rxjs'
+import {effectsMetadataKey} from '../effect'
 
 export interface ProviderProps<T> {
   of: ConstructorType<T>
@@ -32,11 +32,11 @@ class BlocContainer {
   private effectSubscriptions: Unsubscribable[] = []
   
   initialize() {
-    const effects: Effect[] = Reflect.getMetadata(effectsMetadataKey, this.blocType) || []
+    if (!this._bloc) return
+    const effects: string[] = Reflect.getMetadata(effectsMetadataKey, this.blocType.prototype) || []
     for (const effect of effects) {
-      const subscription = effect.stream$.subscribe(
-        (this._bloc as {[key: string]: (value?: string) => void})[effect.propertyKey].bind(this._bloc)
-      )
+      const stream$ = (this._bloc as {[key: string]: Subscribable<any>})[effect]
+      const subscription = stream$.subscribe(doNothing)
       this.effectSubscriptions.push(subscription)
     }
   }
@@ -112,3 +112,6 @@ export function withProvider<P, T=any>(providerProps: ((props: P) => ProviderPro
     }
   }
 }
+
+
+function doNothing() {}
