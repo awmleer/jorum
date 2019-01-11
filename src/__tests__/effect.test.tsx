@@ -1,9 +1,7 @@
 import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
-import {bloc} from '../bloc'
 import {BehaviorSubject, interval} from 'rxjs'
-import {effect} from '../effect'
-import {Provider, suspense, useBloc, useStream} from '..'
+import {bloc, effect, Provider, suspense, useBloc, useStream} from '..'
 import {sleep} from './utils'
 import {map} from 'rxjs/operators'
 
