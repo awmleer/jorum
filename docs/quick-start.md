@@ -87,7 +87,7 @@ return (
 因此，我们需要使用jorum提供的另一个hook：`useStream`
 
 ```tsx
-export const ShowFoo: FC = () => {
+export const ShowFoo: FC = suspense(() => {
   const fooBloc = useBloc(FooBloc)
   const data = useStream(fooBloc.data$)
   return (
@@ -95,10 +95,11 @@ export const ShowFoo: FC = () => {
       {data}
     </div>
   )
-}
+})
 ```
 
 当`fooBloc.data$`更新时，`ShowFoo`会被通知并重新渲染。
 
 > 不同于典型的响应式框架，在jorum中，我们对数据的订阅是**显式**的。
 
+由于`useStream`是异步加载数据的，所以需要用`suspense`HOC对组件进行加工。
