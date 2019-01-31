@@ -177,3 +177,37 @@ it('useSubscription', async function() {
   renderer.unmount()
 })
 
+
+it('useSubscription with inputs comparision', async function() {
+  const mockHandlers: any[] = []
+  mockHandlers[0] = jest.fn(() => null)
+  mockHandlers[1] = jest.fn(() => null)
+  
+  const foo$ = new Subject()
+  const App = suspense(() => {
+    const [handlerIndex, setHandlerIndex] = useState(0)
+    
+    useEffect(() => {
+      setTimeout(() => {
+        setHandlerIndex(1)
+      }, 200)
+    }, [])
+    useSubscription(foo$, (value) => {
+      mockHandlers[handlerIndex](value)
+    }, [handlerIndex])
+    return null
+  })
+  
+  const renderer = TestRenderer.create(
+    <App />
+  )
+  await sleep(100)
+  foo$.next(1)
+  await sleep(200)
+  foo$.next(2)
+  await sleep(100)
+  expect(mockHandlers[0].mock.calls.length).toBe(1)
+  expect(mockHandlers[1].mock.calls.length).toBe(1)
+  renderer.unmount()
+})
+
