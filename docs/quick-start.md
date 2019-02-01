@@ -2,7 +2,7 @@
 
 ## 安装
 
-首先，请确保jorum和RxJS已经被正确的安装，并且相关的环境配置已经完成。这部分的操作在[首页](https://jorum.gitbook.io/jorum/#an-zhuang)有所介绍。
+首先，请确保jorum和RxJS已经被正确的安装，并且相关的环境配置已经完成。这部分的操作在[这里](https://jorum.gitbook.io/jorum/installation)有所介绍。
 
 ## 定义BLoC
 
@@ -44,7 +44,7 @@ export class FooBloc {
 
 现在，我们可以使用`Provider`组件将`FooBloc`加入到React的组件树中：
 
-```tsx
+```jsx
 <Provider of={FooBloc}>
   {/*...*/}
 </Provider>
@@ -58,7 +58,7 @@ export class FooBloc {
 
 在子组件中，使用`useBloc`hook可以获取到外层提供的`FooBloc`的实例：
 
-```tsx
+```jsx
 export const ShowFoo: FC = () => {
   const fooBloc = useBloc(FooBloc)
   return (
@@ -75,7 +75,7 @@ export const ShowFoo: FC = () => {
 
 BLoC中的数据是Observable，我们并不能像下面这样直接渲染到页面上：
 
-```tsx
+```jsx
 return (
   <div>
     {fooBloc.data$}
@@ -86,8 +86,8 @@ return (
 
 因此，我们需要使用jorum提供的另一个hook：`useStream`
 
-```tsx
-export const ShowFoo: FC = () => {
+```jsx
+export const ShowFoo: FC = suspense(() => {
   const fooBloc = useBloc(FooBloc)
   const data = useStream(fooBloc.data$)
   return (
@@ -95,10 +95,15 @@ export const ShowFoo: FC = () => {
       {data}
     </div>
   )
-}
+})
 ```
 
 当`fooBloc.data$`更新时，`ShowFoo`会被通知并重新渲染。
 
 > 不同于典型的响应式框架，在jorum中，我们对数据的订阅是**显式**的。
 
+由于`useStream`是异步加载数据的，所以需要用`suspense`对组件进行加工。
+
+## 不止于此
+
+上面只是一个最简单的样例，jorum还有更多高级和有趣的概念和用法，请移步“概念”章节。

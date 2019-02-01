@@ -11,6 +11,8 @@
 
 📚 [文档](https://jorum.gitbook.io/jorum/)
 
+🧩 [安装及环境配置](https://jorum.gitbook.io/jorum/installation/)
+
 🚀 [快速上手](https://jorum.gitbook.io/jorum/quick-start/)
 
 📂 [GitHub仓库](https://github.com/awmleer/jorum)
@@ -32,16 +34,6 @@
 💉 依赖注入：基于修饰器的依赖注入使代码更易于维护
 
 🎣 Hooks支持：为新版React的Hooks而生，但同时也兼容传统语法
-
-## 安装
-
-> ⚠️ 由于`jorum`中数据流的组织是基于RxJS的，所以需要**同时安装**`rxjs`。
-
-```bash
-$ yarn add rxjs jorum
-# or
-$ npm install rxjs jorum --save
-```
 
 ## 教程&文档
 
