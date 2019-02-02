@@ -43,7 +43,47 @@ export class FooBloc {
 
 ### withProvider
 
+使用withProvider高阶组件可以避免在一些情况下手动创建wrapper组件：
 
+```jsx
+const ExampleComponent = withProvider({
+  of: FooBloc,
+  args: ['A', 'B']
+})(() => {
+  return (
+    <div>
+      {/*...*/}
+    </div>
+  )
+})
+```
+
+`withProvider`的普通使用方式为：
+
+```javascript
+withProvider(a)(b)
+```
+
+其中`a`就是`Provider`组件的props（只不过是object而非jsx的表述形式），而`b`则是一个react组件。
+
+如果你想根据外围输入的props动态产生`Provider`的props，也可以把上式的`a`写成一个函数：
+
+```jsx
+const ExampleComponent = withProvider(props => ({
+  of: FooBloc,
+  args: [props.a, props.b]
+}))(() => {
+  return (
+    <div>
+      {/*...*/}
+    </div>
+  )
+})
+```
+
+```jsx
+<ExampleComponent a="A" b="B"/>
+```
 
 ### 并不需要手动实例化
 
@@ -53,4 +93,31 @@ export class FooBloc {
 
 ### useBloc
 
-### Subscribe
+在**函数组件**中，我们可以使用`useBloc`这个hook来获取指定BLoC的**实例**。
+
+```jsx
+const ExampleComponent = (props) => {
+  const fooBloc = useBloc(FooBloc)
+  // 从这里开始就可以使用fooBloc这个实例了
+  return (
+    <div>
+      {/*...*/}
+    </div>
+  )
+}
+```
+
+### Consumer
+
+在**类组件**中，我们并不能使用`useBloc`，这时就需要通过`Consumer`组件来获取BLoC实例了：
+
+```jsx
+<Provider of={FooBloc}>
+  <Consumer of={FooBloc}>
+    {(fooBloc) => (
+      //...
+    )}
+  </Consumer>
+</Provider>
+```
+
