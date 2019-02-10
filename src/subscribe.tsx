@@ -18,6 +18,7 @@ class State {
 }
 
 
+//TODO rewrite Subscribe into FC
 export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> {
   state = new State()
   
@@ -62,7 +63,7 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
     if (!to) return
     if (Array.isArray(to)) {
       //TODO: remove feature of subscribing to multiple observables at one time
-      console.warn('Subscribing to multiple observables at one time will be deprecated in the next major version. Please avoid using this feature.')
+      console.warn('Subscribing to multiple observables at one time is deprecated. Please avoid using this feature.')
       to.forEach(this.handleObservable.bind(this))
     } else {
       this.handleObservable(to, 0);

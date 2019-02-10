@@ -19,10 +19,6 @@
 
 📬 [提交issue](https://github.com/awmleer/jorum/issues/new)
 
-> jorum现在还是处于v0版本的阶段，API可能会有比较大的变动。
->
-> 我们预计在React v16.8发布后发布jorum的第一个正式版本，因为jorum的设计大量依赖了新版的React Hooks API。
-
 ## 特性
 
 🔩 轻量：简单易用，低侵入性
