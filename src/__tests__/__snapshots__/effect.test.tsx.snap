@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`effect is executed 1`] = `
-<div>
-  yes
-</div>
+<DocumentFragment>
+  <div>
+    yes
+  </div>
+</DocumentFragment>
 `;

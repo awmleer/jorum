@@ -5,6 +5,9 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs'
 import {sleep} from './utils'
 import {FC, useEffect, useState} from 'react'
 import {useSubscription} from '../subscribe'
+import {act} from 'react-dom/test-utils'
+import {render} from 'react-testing-library'
+import 'jest-dom/extend-expect'
 
 
 @bloc
@@ -39,7 +42,9 @@ it('subscribe component with changed stream', async function () {
     const [stream$, setStream$] = useState(bloc.data$)
     useEffect(() => {
       setTimeout(() => {
-        setStream$(bloc.anotherData$)
+        act(() => {
+          setStream$(bloc.anotherData$)
+        })
       }, 400)
     }, [])
     return (
@@ -79,14 +84,13 @@ it('useStream hook with suspense and no initialValue', async function () {
     )
   })
   
-  const renderer = TestRenderer.create(
+  const renderer = render(
     <Provider of={BehaviorSubjectBloc}>
       <App />
     </Provider>
   )
   
-  await sleep(200)
-  expect(renderer.toJSON()).toMatchSnapshot()
+  expect(renderer.asFragment()).toMatchSnapshot()
   renderer.unmount()
 })
 
@@ -95,22 +99,21 @@ it('useStream hook without suspense and with initialValue', async function () {
   const App: FC = () => {
     const bloc = useBloc(BehaviorSubjectBloc)
     const data = useStream(bloc.data$, 'this is initial value')
+    expect(data).toMatchSnapshot()
     return (
       <div>
         {data}
       </div>
     )
   }
-  
-  const renderer = TestRenderer.create(
+
+  const renderer = render(
     <Provider of={BehaviorSubjectBloc}>
       <App />
     </Provider>
   )
-  
-  expect(renderer.toJSON()).toMatchSnapshot()
-  await sleep(200)
-  expect(renderer.toJSON()).toMatchSnapshot()
+
+  expect(renderer.asFragment()).toMatchSnapshot()
   renderer.unmount()
 })
 
@@ -130,25 +133,26 @@ it('useStream hook with changed stream', async function () {
     const [stream$, setStream$] = useState(bloc.data$)
     useEffect(() => {
       setTimeout(() => {
-        setStream$(bloc.anotherData$)
-      }, 200)
+        act(() => {
+          setStream$(bloc.anotherData$)
+        })
+      }, 100)
     }, [])
     return (
       <App stream$={stream$}/>
     )
   }
   
-  const renderer = TestRenderer.create(
+  const renderer = render(
     <Provider of={BehaviorSubjectBloc}>
       <Container />
     </Provider>
   )
   
-  await sleep(200)
-  expect(renderer.toJSON()).toMatchSnapshot()
+  expect(renderer.asFragment()).toMatchSnapshot()
   
-  await sleep(400)
-  expect(renderer.toJSON()).toMatchSnapshot()
+  await sleep(200)
+  expect(renderer.asFragment()).toMatchSnapshot()
   renderer.unmount()
 })
 
@@ -158,7 +162,9 @@ it('useSubscription', async function() {
   const App = suspense(() => {
     const [changed, setChanged] = useState(false)
     useSubscription(foo$, () => {
-      setChanged(true)
+      act(() => {
+        setChanged(true)
+      })
     })
     return (
       <div>
@@ -166,14 +172,14 @@ it('useSubscription', async function() {
       </div>
     )
   })
-  
-  const renderer = TestRenderer.create(
+
+  const renderer = render(
     <App />
   )
   await sleep(100)
   foo$.next(1)
   await sleep(100)
-  expect(renderer.toJSON()).toMatchSnapshot()
+  expect(renderer.asFragment()).toMatchSnapshot()
   renderer.unmount()
 })
 
@@ -182,14 +188,16 @@ it('useSubscription with inputs comparision', async function() {
   const mockHandlers: any[] = []
   mockHandlers[0] = jest.fn(() => null)
   mockHandlers[1] = jest.fn(() => null)
-  
+
   const foo$ = new Subject()
   const App = suspense(() => {
     const [handlerIndex, setHandlerIndex] = useState(0)
-    
+
     useEffect(() => {
       setTimeout(() => {
-        setHandlerIndex(1)
+        act(() => {
+          setHandlerIndex(1)
+        })
       }, 200)
     }, [])
     useSubscription(foo$, (value) => {
@@ -197,8 +205,8 @@ it('useSubscription with inputs comparision', async function() {
     }, [handlerIndex])
     return null
   })
-  
-  const renderer = TestRenderer.create(
+
+  const renderer = render(
     <App />
   )
   await sleep(100)

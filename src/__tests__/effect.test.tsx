@@ -1,9 +1,9 @@
-import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
 import {BehaviorSubject, interval} from 'rxjs'
 import {bloc, effect, Provider, suspense, useBloc, useStream} from '..'
 import {sleep} from './utils'
 import {map} from 'rxjs/operators'
+import {render} from 'react-testing-library'
 
 it('effect is executed', async function () {
   @bloc
@@ -29,13 +29,13 @@ it('effect is executed', async function () {
     )
   })
   
-  const renderer = TestRenderer.create(
+  const renderer = render(
     <Provider of={TestBloc}>
       <Show />
     </Provider>
   )
   
   await sleep(100)
-  expect(renderer.toJSON()).toMatchSnapshot()
+  expect(renderer.asFragment()).toMatchSnapshot()
   renderer.unmount()
 })

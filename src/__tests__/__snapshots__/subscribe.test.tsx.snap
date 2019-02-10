@@ -19,37 +19,45 @@ exports[`subscribe component with changed stream 2`] = `
 `;
 
 exports[`useStream hook with changed stream 1`] = `
-<div>
-  this is data
-</div>
+<DocumentFragment>
+  <div>
+    this is data
+  </div>
+</DocumentFragment>
 `;
 
 exports[`useStream hook with changed stream 2`] = `
-<div>
-  this is another data
-</div>
+<DocumentFragment>
+  <div>
+    this is another data
+  </div>
+</DocumentFragment>
 `;
 
 exports[`useStream hook with suspense and no initialValue 1`] = `
-<div>
-  this is data
-</div>
+<DocumentFragment>
+  <div>
+    this is data
+  </div>
+</DocumentFragment>
 `;
 
-exports[`useStream hook without suspense and with initialValue 1`] = `
-<div>
-  this is initial value
-</div>
-`;
+exports[`useStream hook without suspense and with initialValue 1`] = `"this is initial value"`;
 
-exports[`useStream hook without suspense and with initialValue 2`] = `
-<div>
-  this is data
-</div>
+exports[`useStream hook without suspense and with initialValue 2`] = `"this is data"`;
+
+exports[`useStream hook without suspense and with initialValue 3`] = `
+<DocumentFragment>
+  <div>
+    this is data
+  </div>
+</DocumentFragment>
 `;
 
 exports[`useSubscription 1`] = `
-<div>
-  yes
-</div>
+<DocumentFragment>
+  <div>
+    yes
+  </div>
+</DocumentFragment>
 `;
