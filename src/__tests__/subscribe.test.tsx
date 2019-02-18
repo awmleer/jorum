@@ -1,6 +1,6 @@
 import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
-import {bloc, checkStream, Consumer, Provider, Subscribe, suspense, useBloc, useStream} from '..'
+import {bloc, Consumer, Provider, Subscribe, suspense, useBloc, useStream} from '..'
 import {BehaviorSubject, Observable, Subject} from 'rxjs'
 import {sleep} from './utils'
 import {FC, useEffect, useState} from 'react'
@@ -77,12 +77,13 @@ it('useStream hook with suspense and no initialValue', async function () {
   const App = suspense(() => {
     const bloc = useBloc(BehaviorSubjectBloc)
     const data = useStream(bloc.data$)
-    checkStream()
-    return (
-      <div>
-        {data}
-      </div>
-    )
+    return () => {
+      return (
+        <div>
+          {data}
+        </div>
+      )
+    }
   })
   
   const renderer = render(
@@ -122,11 +123,13 @@ it('useStream hook without suspense and with initialValue', async function () {
 it('useStream hook with changed stream', async function () {
   const App = suspense<{stream$: Observable<any>}>((props) => {
     const data = useStream(props.stream$)
-    return (
-      <div>
-        {data}
-      </div>
-    )
+    return () => {
+      return (
+        <div>
+          {data}
+        </div>
+      )
+    }
   })
   
   const Container: FC = () => {
@@ -167,12 +170,13 @@ it('useSubscription', async function() {
         setChanged(true)
       })
     })
-    checkStream()
-    return (
-      <div>
-        {changed ? 'yes' : 'no'}
-      </div>
-    )
+    return () => {
+      return (
+        <div>
+          {changed ? 'yes' : 'no'}
+        </div>
+      )
+    }
   })
 
   const renderer = render(
@@ -227,15 +231,16 @@ it('multiple useStream hooks', async function () {
     const bloc = useBloc(BehaviorSubjectBloc)
     const data = useStream(bloc.data$)
     const anotherData = useStream(bloc.anotherData$)
-    checkStream()
     
-    return (
-      <div>
-        {data}
-        <br/>
-        {anotherData}
-      </div>
-    )
+    return () => {
+      return (
+        <div>
+          {data}
+          <br/>
+          {anotherData}
+        </div>
+      )
+    }
   })
   
   const renderer = render(
@@ -247,3 +252,4 @@ it('multiple useStream hooks', async function () {
   expect(renderer.asFragment()).toMatchSnapshot()
   renderer.unmount()
 })
+
