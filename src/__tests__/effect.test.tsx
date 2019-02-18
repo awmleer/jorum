@@ -1,10 +1,9 @@
 import * as React from 'react'
 import {BehaviorSubject, interval} from 'rxjs'
-import {bloc, effect, Provider, suspense, useBloc, useStream} from '..'
+import {bloc, checkStream, effect, Provider, suspense, useBloc, useStream} from '..'
 import {sleep} from './utils'
 import {map} from 'rxjs/operators'
 import {render} from 'react-testing-library'
-import {checkStream} from '../suspense'
 
 it('effect is executed', async function () {
   @bloc

@@ -1,6 +1,6 @@
 import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
-import {bloc, Consumer, Provider, Subscribe, suspense, useBloc, useStream} from '..'
+import {bloc, checkStream, Consumer, Provider, Subscribe, suspense, useBloc, useStream} from '..'
 import {BehaviorSubject, Observable, Subject} from 'rxjs'
 import {sleep} from './utils'
 import {FC, useEffect, useState} from 'react'
@@ -8,7 +8,6 @@ import {useSubscription} from '../subscribe'
 import {act} from 'react-dom/test-utils'
 import {render} from 'react-testing-library'
 import 'jest-dom/extend-expect'
-import {checkStream} from '../suspense'
 
 
 @bloc
