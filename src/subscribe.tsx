@@ -1,7 +1,7 @@
 import * as React from 'react'
-import {Component, ReactNode, useRef} from 'react'
+import {Component, ReactNode, useEffect, useRef, useState} from 'react'
 import {Observable, PartialObserver, Subscribable, Subscription} from 'rxjs'
-import {StreamNotInitialized} from './suspense'
+import {streamStatus} from './suspense'
 
 interface PropsMulti {
   to: Observable<any>[]
@@ -89,17 +89,20 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
 
 export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
   const initializedRef = useRef(false)
-  const [state, setState] = React.useState<T>(initialValue)
+  
+  const [state, setState] = useState<T>(initialValue)
   if (initialValue !== undefined) {
     initializedRef.current = true
   }
-  React.useEffect(() => {
+  useEffect(() => {
+    if (streamStatus) streamStatus.waitingCount++
     if (stream) {
-      const subscription = stream.subscribe({
-        next: (v) => {
+      const subscription = stream.subscribe((v) => {
+        if (initializedRef.current === false) {
           initializedRef.current = true
-          setState(v)
+          if (streamStatus) streamStatus.waitingCount--
         }
+        setState(v)
       })
       return () => {
         subscription.unsubscribe()
@@ -107,16 +110,13 @@ export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
       }
     }
   },[stream])
-  if (!initializedRef.current) {
-    throw new StreamNotInitialized()
-  }
   return state
 }
 
 export function useSubscription<T>(stream: Subscribable<T>, observer: PartialObserver<T>, inputs?: any[]): void
 export function useSubscription<T>(stream: Subscribable<T>, next: (value: T) => void, inputs?: any[]): void
 export function useSubscription<T>(stream: Subscribable<T>, subscribeArg: any, inputs: any[] = []): void {
-  React.useEffect(() => {
+  useEffect(() => {
     if (stream) {
       const subscription = stream.subscribe(subscribeArg)
       return subscription.unsubscribe.bind(subscription)

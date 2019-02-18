@@ -4,6 +4,7 @@ import {bloc, effect, Provider, suspense, useBloc, useStream} from '..'
 import {sleep} from './utils'
 import {map} from 'rxjs/operators'
 import {render} from 'react-testing-library'
+import {checkStream} from '../suspense'
 
 it('effect is executed', async function () {
   @bloc
@@ -22,6 +23,7 @@ it('effect is executed', async function () {
   const Show = suspense(() => {
     const testBloc = useBloc(TestBloc)
     const test = useStream(testBloc.test$)
+    checkStream()
     return (
       <div>
         {test}

@@ -8,6 +8,7 @@ import {useSubscription} from '../subscribe'
 import {act} from 'react-dom/test-utils'
 import {render} from 'react-testing-library'
 import 'jest-dom/extend-expect'
+import {checkStream} from '../suspense'
 
 
 @bloc
@@ -77,6 +78,7 @@ it('useStream hook with suspense and no initialValue', async function () {
   const App = suspense(() => {
     const bloc = useBloc(BehaviorSubjectBloc)
     const data = useStream(bloc.data$)
+    checkStream()
     return (
       <div>
         {data}
@@ -166,6 +168,7 @@ it('useSubscription', async function() {
         setChanged(true)
       })
     })
+    checkStream()
     return (
       <div>
         {changed ? 'yes' : 'no'}
@@ -190,7 +193,7 @@ it('useSubscription with inputs comparision', async function() {
   mockHandlers[1] = jest.fn(() => null)
 
   const foo$ = new Subject()
-  const App = suspense(() => {
+  const App: FC = () => {
     const [handlerIndex, setHandlerIndex] = useState(0)
 
     useEffect(() => {
@@ -204,7 +207,7 @@ it('useSubscription with inputs comparision', async function() {
       mockHandlers[handlerIndex](value)
     }, [handlerIndex])
     return null
-  })
+  }
 
   const renderer = render(
     <App />
@@ -219,3 +222,29 @@ it('useSubscription with inputs comparision', async function() {
   renderer.unmount()
 })
 
+
+it('multiple useStream hooks', async function () {
+  const App = suspense(() => {
+    const bloc = useBloc(BehaviorSubjectBloc)
+    const data = useStream(bloc.data$)
+    const anotherData = useStream(bloc.anotherData$)
+    checkStream()
+    
+    return (
+      <div>
+        {data}
+        <br/>
+        {anotherData}
+      </div>
+    )
+  })
+  
+  const renderer = render(
+    <Provider of={BehaviorSubjectBloc}>
+      <App />
+    </Provider>
+  )
+  
+  expect(renderer.asFragment()).toMatchSnapshot()
+  renderer.unmount()
+})

@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`multiple useStream hooks 1`] = `
+<DocumentFragment>
+  <div>
+    this is data
+    <br />
+    this is another data
+  </div>
+</DocumentFragment>
+`;
+
 exports[`subscribe component 1`] = `
 <div>
   this is data
