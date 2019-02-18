@@ -90,6 +90,7 @@ return (
 export const ShowFoo: FC = suspense(() => {
   const fooBloc = useBloc(FooBloc)
   const data = useStream(fooBloc.data$)
+  checkStream()
   return (
     <div>
       {data}
