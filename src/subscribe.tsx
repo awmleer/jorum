@@ -113,13 +113,13 @@ export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
   return state
 }
 
-export function useSubscription<T>(stream: Subscribable<T>, observer: PartialObserver<T>, inputs?: any[]): void
-export function useSubscription<T>(stream: Subscribable<T>, next: (value: T) => void, inputs?: any[]): void
-export function useSubscription<T>(stream: Subscribable<T>, subscribeArg: any, inputs: any[] = []): void {
+export function useSubscription<T>(stream: Subscribable<T>, observer: PartialObserver<T>, deps?: any[]): void
+export function useSubscription<T>(stream: Subscribable<T>, next: (value: T) => void, deps?: any[]): void
+export function useSubscription<T>(stream: Subscribable<T>, subscribeArg: any, deps: any[] = []): void {
   useEffect(() => {
     if (stream) {
       const subscription = stream.subscribe(subscribeArg)
       return subscription.unsubscribe.bind(subscription)
     }
-  },[stream, ...inputs])
+  },[stream, ...deps])
 }
