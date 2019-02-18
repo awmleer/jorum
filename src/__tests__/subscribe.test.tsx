@@ -253,3 +253,31 @@ it('multiple useStream hooks', async function () {
   renderer.unmount()
 })
 
+it('useEffect in innerComponent should be called only once', function () {
+  const mockFn = jest.fn(() => null)
+  
+  const App = suspense(() => {
+    const bloc = useBloc(BehaviorSubjectBloc)
+    const data = useStream(bloc.data$)
+    
+    return () => {
+      useEffect(() => {
+        mockFn()
+      }, [])
+      return (
+        <div>
+          {data}
+        </div>
+      )
+    }
+  })
+  
+  const renderer = render(
+    <Provider of={BehaviorSubjectBloc}>
+      <App />
+    </Provider>
+  )
+  
+  expect(mockFn.mock.calls.length).toBe(1)
+  renderer.unmount()
+})
