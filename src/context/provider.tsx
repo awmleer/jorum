@@ -57,26 +57,33 @@ class BlocContainer {
   }
 }
 
-export const Provider: FC<Props<any>> = function<T>(props: Props<T>) {
-  function createBloc(Bloc: ConstructorType<T>, args?: any[]) {
+export const Provider: FC<Props<any>> = function Provider<T>(props: Props<T>) {
+  function useInjections(Bloc: ConstructorType<T>, args?: any[]) {
     const injects = Reflect.getMetadata(injectMetadataKey, Bloc) || []
     const paramTypes = Reflect.getMetadata('design:paramtypes', Bloc) || []
     for (let inject of injects) {
       const Context = Reflect.getMetadata(contextSymbol, paramTypes[inject])
-      args[inject] = useContext(Context)
+      const injection = useContext(Context)
+      if (args !== null) {
+        args[inject] = injection
+      }
     }
+  }
+  
+  function createBloc(Bloc: ConstructorType<T>, args?: any[]) {
     return new Bloc(...args)
   }
   
   const containerRef = useRef(new BlocContainer())
+  useInjections(props.of, props.args)
   
   if (containerRef.current.blocType !== props.of) {
     containerRef.current.blocType = props.of
-    containerRef.current.bloc = createBloc(props.of, props.args)
+    containerRef.current.bloc = new props.of(...props.args)
   }
   
   if (!containerRef.current.hasBloc()) {
-    containerRef.current.bloc = createBloc(props.of, props.args)
+    containerRef.current.bloc = new props.of(...props.args)
   }
   
   useEffect(() => {
@@ -92,7 +99,6 @@ export const Provider: FC<Props<any>> = function<T>(props: Props<T>) {
     </Context.Provider>
   )
 }
-
 Provider.defaultProps = {
   args: []
 }
@@ -100,7 +106,7 @@ Provider.defaultProps = {
 
 export function withProvider<P, T=any>(providerProps: ((props: P) => ProviderProps<T>) | ProviderProps<T>) {
   return function (C: React.ComponentType<P>): React.ComponentType<P> {
-    return function(props: P) {
+    return function WithProvider(props: P) {
       if (typeof providerProps === 'function') {
         providerProps = providerProps(props)
       }

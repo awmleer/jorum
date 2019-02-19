@@ -5,12 +5,12 @@ import {sharedData, StreamStatus} from './shared-data'
 
 export function suspense<P = {}>(
   init: (props: P & { children?: ReactNode }) => (() => ReactElement<any> | null) | null
-): FC<P & {children?: ReactNode}> {
+) {
   let render: ReturnType<typeof init> = null
   const InnerComponent: FC = () => {
     return render()
   }
-  return function (props) {
+  const Component: FC<P & {children?: ReactNode}> = function(props) {
     const {current: streamStatus} = useRef<StreamStatus>({
       isFirstRun: true,
       waitingCount: 0,
@@ -25,4 +25,6 @@ export function suspense<P = {}>(
       <InnerComponent />
     )
   }
+  Component.displayName = init.name
+  return Component
 }
