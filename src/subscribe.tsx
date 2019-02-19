@@ -92,7 +92,7 @@ export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
   const initializedRef = useRef(false)
   
   const [state, setState] = useState<T>(initialValue)
-  if (initializedRef.current === false) {
+  if (streamStatus.isFirstRun) {
     if (initialValue !== undefined) { // with initialValue
       initializedRef.current = true
     } else { // without initialValue

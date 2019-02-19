@@ -12,10 +12,12 @@ export function suspense<P = {}>(
   }
   return function (props) {
     const {current: streamStatus} = useRef<StreamStatus>({
-      waitingCount: 0
+      isFirstRun: true,
+      waitingCount: 0,
     })
     sharedData.streamStatus = streamStatus
     render = init(props)
+    streamStatus.isFirstRun = false
     sharedData.streamStatus = null
     if (streamStatus.waitingCount !== 0) return null
     if (render === null) return null

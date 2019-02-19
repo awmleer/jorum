@@ -1,4 +1,5 @@
 export interface StreamStatus {
+  isFirstRun: boolean
   waitingCount: number
 }
 
