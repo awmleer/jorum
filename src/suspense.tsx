@@ -1,28 +1,24 @@
 import * as React from 'react'
 import {FC, ReactElement, ReactNode, useRef} from 'react'
+import {sharedData, StreamStatus} from './shared-data'
 
-interface StreamStatus {
-  waitingCount: number
-}
-
-export let streamStatus: StreamStatus = null
 
 export function suspense<P = {}>(
-  init: (props: P & { children?: ReactNode }) => () => ReactElement<any> | null
+  init: (props: P & { children?: ReactNode }) => (() => ReactElement<any> | null) | null
 ): FC<P & {children?: ReactNode}> {
-  let render: ReturnType<typeof init>
+  let render: ReturnType<typeof init> = null
   const InnerComponent: FC = () => {
     return render()
   }
   return function (props) {
-    const statusRef = useRef<StreamStatus>({
+    const {current: streamStatus} = useRef<StreamStatus>({
       waitingCount: 0
     })
-    streamStatus = statusRef.current
+    sharedData.streamStatus = streamStatus
     render = init(props)
-    if (streamStatus.waitingCount !== 0) {
-      return null
-    }
+    sharedData.streamStatus = null
+    if (streamStatus.waitingCount !== 0) return null
+    if (render === null) return null
     return (
       <InnerComponent />
     )

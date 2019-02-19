@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {Component, ReactNode, useEffect, useRef, useState} from 'react'
 import {Observable, PartialObserver, Subscribable, Subscription} from 'rxjs'
-import {streamStatus} from './suspense'
+import {sharedData} from './shared-data'
 
 interface PropsMulti {
   to: Observable<any>[]
@@ -88,14 +88,18 @@ export class Subscribe<T> extends Component<PropsSingle<T> | PropsMulti, State> 
 }
 
 export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
+  const {streamStatus} = sharedData
   const initializedRef = useRef(false)
   
   const [state, setState] = useState<T>(initialValue)
-  if (initialValue !== undefined) {
-    initializedRef.current = true
+  if (initializedRef.current === false) {
+    if (initialValue !== undefined) { // with initialValue
+      initializedRef.current = true
+    } else { // without initialValue
+      if (streamStatus) streamStatus.waitingCount++
+    }
   }
   useEffect(() => {
-    if (streamStatus) streamStatus.waitingCount++
     if (stream) {
       const subscription = stream.subscribe((v) => {
         if (initializedRef.current === false) {
@@ -106,7 +110,6 @@ export function useStream<T>(stream: Subscribable<T>, initialValue?: T): T {
       })
       return () => {
         subscription.unsubscribe()
-        initializedRef.current = false
       }
     }
   },[stream])
