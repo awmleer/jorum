@@ -64,14 +64,10 @@ export const Provider: FC<Props<any>> = function Provider<T>(props: Props<T>) {
     for (let inject of injects) {
       const Context = Reflect.getMetadata(contextSymbol, paramTypes[inject])
       const injection = useContext(Context)
-      if (args !== null) {
+      if (args) {
         args[inject] = injection
       }
     }
-  }
-  
-  function createBloc(Bloc: ConstructorType<T>, args?: any[]) {
-    return new Bloc(...args)
   }
   
   const containerRef = useRef(new BlocContainer())
