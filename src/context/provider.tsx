@@ -103,11 +103,9 @@ Provider.defaultProps = {
 export function withProvider<P, T=any>(providerProps: ((props: P) => ProviderProps<T>) | ProviderProps<T>) {
   return function (C: React.ComponentType<P>): React.ComponentType<P> {
     return function WithProvider(props: P) {
-      if (typeof providerProps === 'function') {
-        providerProps = providerProps(props)
-      }
+      const finalProviderProps = typeof providerProps === 'function' ? providerProps(props) : providerProps
       return (
-        <Provider {...providerProps}>
+        <Provider {...finalProviderProps}>
           <C {...props} />
         </Provider>
       )

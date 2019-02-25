@@ -170,5 +170,9 @@ it('withProvider with function as param', function() {
     <App text="this is from text prop" />
   )
   expect(renderer.toJSON()).toMatchSnapshot()
+  const rendererB = TestRenderer.create(
+    <App text="this is some other text" />
+  )
+  expect(rendererB.toJSON()).toMatchSnapshot()
 })
 

@@ -53,3 +53,9 @@ exports[`withProvider with function as param 1`] = `
   this is from text prop
 </div>
 `;
+
+exports[`withProvider with function as param 2`] = `
+<div>
+  this is some other text
+</div>
+`;
