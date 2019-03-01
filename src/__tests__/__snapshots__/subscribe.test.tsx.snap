@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`multiple suspense component 1`] = `
+<DocumentFragment>
+  <div>
+    a
+  </div>
+  <div>
+    b
+  </div>
+</DocumentFragment>
+`;
+
 exports[`multiple useStream hooks 1`] = `
 <DocumentFragment>
   <div>

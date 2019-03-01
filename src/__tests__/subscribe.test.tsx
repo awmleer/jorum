@@ -1,7 +1,7 @@
 import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
 import {bloc, Consumer, Provider, Subscribe, suspense, useBloc, useStream} from '..'
-import {BehaviorSubject, Observable, Subject} from 'rxjs'
+import {BehaviorSubject, interval, Observable, Subject} from 'rxjs'
 import {sleep} from './utils'
 import {FC, useEffect, useState} from 'react'
 import {useSubscription} from '../subscribe'
@@ -283,4 +283,33 @@ it('useEffect in innerComponent should be called only once', async function () {
   
   expect(mockFn.mock.calls.length).toBe(1)
   renderer.unmount()
+})
+
+it('multiple suspense component', async function() {
+  interface Props {
+    text: string
+  }
+  const App = suspense<Props>(function C(props) {
+    return () => {
+      const [s, setS] = useState(1)
+      useEffect(() => {
+        setTimeout(() => {
+          setS(2)
+        }, 50)
+      }, [])
+      return (
+        <div>{props.text}</div>
+      )
+    }
+  })
+  
+  const renderer = render(
+    <>
+      <App text="a" />
+      <App text="b" />
+    </>
+  )
+  
+  await sleep(100)
+  expect(renderer.asFragment()).toMatchSnapshot()
 })
