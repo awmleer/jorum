@@ -1,7 +1,7 @@
 import * as TestRenderer from 'react-test-renderer'
 import * as React from 'react'
 import {bloc, Consumer, Provider, Subscribe, suspense, useBloc, useStream} from '..'
-import {BehaviorSubject, interval, Observable, Subject} from 'rxjs'
+import {BehaviorSubject, Observable, Subject} from 'rxjs'
 import {sleep} from './utils'
 import {FC, useEffect, useState} from 'react'
 import {useSubscription} from '../subscribe'
@@ -313,3 +313,4 @@ it('multiple suspense component', async function() {
   await sleep(100)
   expect(renderer.asFragment()).toMatchSnapshot()
 })
+

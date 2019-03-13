@@ -12,7 +12,7 @@ export function suspense<P = {}>(
   }
   InnerComponent.displayName = `Suspense(${init.name})`
   
-  const Component: FC<P & {children?: ReactNode}> = function (props) {
+  const Component: FC<P> = function (props) {
     const {current: streamStatus} = useRef<StreamStatus>({
       isFirstRun: true,
       waitingCount: 0,
