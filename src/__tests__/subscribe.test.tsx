@@ -208,7 +208,7 @@ it('useSubscription with inputs comparision', async function() {
     }, [])
     useSubscription(foo$, (value) => {
       mockHandlers[handlerIndex](value)
-    }, [handlerIndex])
+    })
     return null
   }
 
